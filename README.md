@@ -21,7 +21,7 @@ Bạn cần có: tài khoản Claude do công ty cấp, tài khoản Google côn
 
 ## Cần bật những gì
 
-**Người quản trị Claude Team (Owner) bật một lần cho cả công ty** — claude.ai → Organization settings:
+**Người quản trị Claude Team (Owner) bật một lần cho cả công ty** — claude.ai → Organization settings. Hướng dẫn từng bước và tin nhắn mẫu để gửi Owner: [`docs/owner-setup-guide.md`](docs/owner-setup-guide.md).
 
 | # | Bật gì | Ở đâu | Để làm gì | Bắt buộc? |
 |---|---|---|---|---|

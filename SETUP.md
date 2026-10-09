@@ -56,6 +56,7 @@ Mở đầu: "Chào bạn! Mình sẽ cài công cụ research cho team Marketin
    Nếu Google Workspace công ty chặn ứng dụng ngoài: admin.google.com → Security → Access and data control → API controls → tin cậy ứng dụng Claude.
    Cảm ơn!
    ```
+   Người quản trị cần hướng dẫn chi tiết → gửi họ file `docs/owner-setup-guide.md`.
    Trong lúc chờ: dùng **cách 2** (mục dưới) để team vẫn làm việc được.
 4. Kết nối báo lỗi quyền (Owner chỉ cho đọc): "Người quản trị đang chỉ cho phép đọc. Nhờ họ cho phép sửa với Google Sheets." Trong lúc chờ: cách 2.
 
