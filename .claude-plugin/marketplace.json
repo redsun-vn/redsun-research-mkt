@@ -1,0 +1,16 @@
+{
+  "name": "redsun-mkt",
+  "owner": {
+    "name": "Redsun"
+  },
+  "plugins": [
+    {
+      "name": "redsun-mkt",
+      "source": "./",
+      "description": "Research insight hằng ngày + Content Calendar tuần truy vết được, lưu trên Google Drive."
+    }
+  ],
+  "metadata": {
+    "description": "Bộ công cụ Marketing redsun.vn cho Claude."
+  }
+}
