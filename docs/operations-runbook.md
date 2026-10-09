@@ -2,6 +2,8 @@
 
 Dành cho người bảo trì plugin `redsun-mkt` (không phải team MKT).
 
+**Người phụ trách kỹ thuật:** GitHub `vuducnam` — phát hành bản mới, gửi file ZIP và thông báo cho team MKT, xử lý sự cố team báo lên.
+
 ## Cấu trúc repo
 
 | Đường dẫn | Vai trò |
