@@ -1,6 +1,0 @@
-CONTENT STRATEGY
-Trạng thái: approved
-CÁCH DUYỆT: đổi chữ draft ở dòng trạng thái thành approved.
-P-HOSTING-01 | Hosting | Chi phí minh bạch
-P-EMAIL-01 | email | Email dễ bắt đầu
-P-EMAIL-01 | email | Trùng mã

@@ -1,58 +1,44 @@
 # Playbook nguồn dữ liệu
 
-Kết quả kiểm chứng thật ngày 2026-10-09 quyết định nguồn nào đọc tự động, nguồn nào cần Chrome.
+Danh sách nguồn cụ thể (link Fanpage, TikTok, YouTube, blog/bảng giá, từ khoá Ad Library) nằm ở tab **Nguồn theo dõi**. File này hướng dẫn **cách đọc** từng loại.
 
-| Nguồn | Chế độ | Công cụ | Đã kiểm chứng |
+Kiểm chứng thật ngày 2026-10-09 (từ Claude Code):
+
+| Nguồn | Chế độ | Công cụ | Kết quả kiểm chứng |
 |---|---|---|---|
-| Website/blog đối thủ | public-auto | WebFetch | Đọc được menu sản phẩm, trang khuyến mãi; URL sai trả 404 |
-| Google Trends VN | public-auto | WebFetch | `trends.google.com/trending?geo=VN` trả từ khoá + lượng tìm |
-| Tìm kiếm theo keyword | public-auto | WebSearch | — |
-| Meta Ad Library | chrome | Claude in Chrome | WebFetch bị ngắt kết nối; Chrome đọc được quảng cáo thật (không cần đăng nhập) |
-| Fanpage đối thủ | chrome | Claude in Chrome + tài khoản thật | Facebook chặn đọc tự động khi chưa đăng nhập |
-| TikTok profile đối thủ | chrome | Claude in Chrome + tài khoản thật | WebFetch chỉ trả tiêu đề trang |
-| TikTok Creative Center | chrome | Claude in Chrome | WebFetch chỉ trả khung trang + nút đăng nhập |
+| Website, blog, bảng giá | thường | WebFetch | Đọc được (URL sai trả 404 → thử trang chủ) |
+| Google Trends VN | thường | WebFetch `https://trends.google.com/trending?geo=VN` | Đọc được từ khoá + lượng tìm |
+| Tìm kiếm web | thường | WebSearch | — |
+| YouTube kênh đối thủ | thường | WebFetch | Chưa kiểm chứng; trống thì ghi `trống` |
+| Meta Ad Library | chrome | Claude in Chrome | WebFetch bị ngắt kết nối; Chrome đọc được quảng cáo thật, không cần đăng nhập |
+| Fanpage, Facebook Groups | chrome | Claude in Chrome + tài khoản thật | Facebook chặn đọc tự động khi chưa đăng nhập |
+| TikTok | chrome | Claude in Chrome + tài khoản thật | WebFetch chỉ trả tiêu đề trang |
 
-## Cách đọc từng nguồn
+Giới hạn đã biết (từ bảng mẫu của team): Facebook chỉ đọc được các bài mới nhất của Fanpage; TikTok chỉ có lượt xem từng video.
 
-### Website/blog đối thủ (public-auto)
-- Ưu tiên trang chủ, trang khuyến mãi, bảng giá, blog mới nhất. Nếu URL trong config trả 404, thử trang chủ rồi tìm link "khuyến mãi"/"bảng giá".
-- Lấy: tên gói, giá, ưu đãi, câu headline, nút CTA, chủ đề bài blog mới.
-- `channel = website`.
+## Cách đọc
 
-### Google Trends VN (public-auto)
-- URL: `https://trends.google.com/trending?geo=VN`. Chỉ giữ xu hướng liên quan tới doanh nghiệp, website, email, phần mềm, công nghệ, mùa vụ kinh doanh (ví dụ khai trương, Tết, mùa thuế). Bỏ xổ số, thể thao, giải trí không liên quan.
-- `channel = google_trends`, `competitor = thi-truong`, `product_line = general` hoặc dòng sản phẩm liên quan.
+**Website / blog / bảng giá** — trang ở cột `Blog / giá / website`. Lấy: bài blog mới (tiêu đề, ngày), gói và giá, ưu đãi, nút CTA. `kenh = Website blog`. Đếm tỷ lệ chủ đề khi có thể ("3/5 bài blog gần nhất về vay vốn").
 
-### Tìm kiếm theo keyword (public-auto)
-- WebSearch từng keyword trong config, thêm năm hiện tại. Đọc 1–3 kết quả từ diễn đàn, nhóm hỏi đáp, bài so sánh để tìm **pain point khách hàng nói ra**.
-- `channel = search`.
+**Meta Ad Library** — mở
+`https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=VN&q=<Từ khóa Ad Library>&search_type=keyword_unordered`
+(ô Ghi chú ghi "cụm từ chính xác" → dùng `search_type=keyword_exact_phrase`). Chờ khoảng 5 giây rồi đọc chữ trên trang. Chỉ giữ quảng cáo của đúng đối thủ. Lấy: số quảng cáo đang chạy, ngày bắt đầu, ngành/đối tượng nhắm, ưu đãi, CTA, "nhiều phiên bản". URL ghi `https://www.facebook.com/ads/library/?country=VN&q=<từ khoá>`. `kenh = Quảng cáo Meta`.
 
-### Meta Ad Library (chrome)
-- URL theo tên page đối thủ: `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=VN&q=<Tên trên Ad Library>&search_type=keyword_unordered`
-- URL theo keyword: thay `q=<keyword tiếng Việt>`. Kết quả theo keyword lẫn nhiều quảng cáo nước ngoài: chỉ giữ quảng cáo nhắm thị trường Việt Nam hoặc của đối thủ trong config.
-- Trang tải chậm: chờ khoảng 5 giây rồi mới lấy chữ trên trang.
-- Lấy: tên advertiser, ngày bắt đầu chạy, nội dung quảng cáo, ưu đãi/giá, CTA, số phiên bản ("This ad has multiple versions" = đang thử nhiều mẫu).
-- `source_url` = link trang Ad Library đã tìm (kèm Library ID trong `evidence`). `channel = facebook_ads`.
+**Fanpage** — mở link cột `Fanpage`. Đọc các bài mới nhất (không cuộn quá giới hạn). Lấy: ngày đăng, câu mở đầu, định dạng, ưu đãi, CTA, lượt thích/chia sẻ/bình luận **hiển thị công khai** → cột `Tín hiệu`. `kenh = Facebook`.
 
-### Fanpage đối thủ (chrome, tài khoản thật)
-- Mở link Fanpage trong config. Đọc tối đa số bài cấu hình, mới nhất trước. Không cuộn quá phạm vi đó.
-- Lấy: ngày đăng, câu mở đầu (hook), định dạng (ảnh/video/carousel), ưu đãi, CTA, lượt tương tác **hiển thị công khai**.
-- Không đọc, không ghi tên/thông tin người bình luận. Có thể ghi nhận *chủ đề* bình luận lặp lại (ví dụ "nhiều người hỏi giá gia hạn") mà không nêu ai.
-- `channel = facebook_page`.
+**Facebook Groups / tìm bài** — chỉ khi có nhóm/từ khoá trong Nguồn theo dõi. Ghi *chủ đề* người dùng bàn, không ghi tên hay thông tin người đăng/bình luận. `kenh = Facebook Groups`.
 
-### TikTok profile đối thủ (chrome, tài khoản thật)
-- Mở link/@tên trong config. Đọc tối đa số video cấu hình.
-- Lấy: caption, hashtag, lượt xem hiển thị, định dạng (talking head, màn hình, hài…), 3 giây đầu nói gì nếu caption mô tả.
-- `channel = tiktok`.
+**TikTok** — mở link cột `TikTok`. Lấy: caption, hashtag, lượt xem từng video, kiểu video. `kenh = TikTok`.
 
-### TikTok Creative Center (chrome)
-- Trang xu hướng hashtag/nội dung, chọn khu vực Vietnam nếu có. Nếu trang yêu cầu đăng nhập hoặc không có Vietnam: ghi `blocked`/`empty` kèm lý do, bỏ qua.
-- `channel = tiktok_creative_center`.
+**Từ khoá** — dòng `từ khóa` của sản phẩm: WebSearch từng từ khoá (thêm năm hiện tại), đọc 1–3 kết quả để tìm chủ đề nóng và nỗi đau khách hàng nói ra; Google Trends xem từ khoá nào đang lên. `kenh = Tìm kiếm web` / `Google Trends`.
 
-## Giới hạn bắt buộc khi dùng Chrome (ToS & an toàn tài khoản)
+**Nguồn của mình** (dòng `của mình`) — lấy số liệu `mốc` (người theo dõi, lượt thích…) để so sánh về sau, `nhan = mốc`.
 
-- Chỉ dùng tài khoản thật mà người dùng đã tự đăng nhập. Không đăng nhập hộ, không tạo tài khoản, không giả danh.
-- Chỉ đọc. Không thích, không bình luận, không theo dõi, không nhắn tin, không bấm vào quảng cáo.
-- Khối lượng thấp như người đọc bình thường: tối đa số bài cấu hình mỗi trang, mở từng trang một, đóng tab khi xong.
-- Nền tảng hiện cảnh báo/captcha/yêu cầu xác minh: **dừng ngay**, ghi `blocked`, báo người dùng. Không tìm cách vượt.
-- Không lưu dữ liệu cá nhân (tên, ảnh, số điện thoại của người dùng mạng xã hội).
+## Giới hạn bắt buộc khi dùng Chrome
+
+- Tài khoản thật mà người dùng đã tự đăng nhập. Không đăng nhập hộ, không tạo tài khoản, không giả danh.
+- Chỉ đọc. Không thích, bình luận, theo dõi, nhắn tin, bấm quảng cáo, đồng ý popup quyền.
+- Theo `Giới hạn mỗi lần chạy` trong Nguồn theo dõi (mặc định tối đa 30 trang mở, 20 phút). Mở từng trang một, đóng tab khi xong.
+- Gặp captcha, yêu cầu đăng nhập, checkpoint → **dừng ngay** nguồn đó, ghi `Nguồn lỗi/bị chặn`, báo người dùng. Không tìm cách vượt.
+- Chỉ mở URL có trong Nguồn theo dõi hoặc URL tìm kiếm ở trên. Không mở hộp thư, thông báo, bảng tin cá nhân.
+- Không lưu dữ liệu cá nhân của người dùng mạng xã hội.

@@ -1,166 +1,277 @@
 #!/usr/bin/env python3
-"""Traceability gate for the MKT insight database and weekly content calendar.
+"""Traceability gate for the Redsun MKT "Research database" Google Sheet.
 
-Checks insight rows against shared/data-contract.md and, for a calendar, that every
-row points to 1-3 real non-duplicate insights of a compatible product line and to a
-pillar of an approved strategy. Standard library only, so it runs in Claude Code and
-in Cowork sandboxes without installing anything.
+Reads the workbook exported from Google Drive as .xlsx (or the JSON result file a
+Drive download tool saved, whose "content" field holds the base64 xlsx) and checks
+it against shared/data-contract.md. For the weekly calendar it validates a draft
+CSV row by row against Research database and Chiến lược content, and writes the
+valid rows as a JSON 2D array ready for the Sheets connector's update_values.
 
-Exit codes:
-  insights mode: 0 = clean, 1 = rows failed validation
-  calendar mode: 0 = no calendar row rejected, 1 = some rows rejected,
-                 2 = strategy not approved
-  (in calendar mode, schema problems in old insight files are printed as
-   INSIGHT_WARNINGS and do not change the exit code)
+Standard library only, so it runs in Claude Code and Cowork without installs.
+
+Exit codes: 0 = clean, 1 = rows failed / were rejected,
+            2 = a product to plan for has no approved pillar.
 """
 
 import argparse
+import base64
 import csv
 import datetime as dt
+import io
+import json
 import re
 import sys
 import unicodedata
+import zipfile
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
-PRODUCT_LINES = {"saas", "hosting", "server", "email", "general"}
-CHANNELS = {
-    "website", "facebook_page", "facebook_ads", "tiktok",
-    "tiktok_creative_center", "google_trends", "search", "other",
-}
-SOURCE_MODES = {"public-auto", "chrome"}
-TAGS = {"pain_point", "offer", "cta", "keyword", "content_pattern", "topic"}
-RUN_STATUSES = {"ok", "blocked", "empty", "skipped"}
-INSIGHT_COLUMNS = [
-    "insight_id", "run_id", "captured_at", "product_line", "competitor", "channel",
-    "source_mode", "source_url", "observation", "evidence", "meaning",
-    "content_idea", "tags", "dup_of",
-]
-REQUIRED_INSIGHT = [c for c in INSIGHT_COLUMNS if c != "dup_of"]
-CALENDAR_COLUMNS = [
-    "cal_id", "week", "date", "channel", "product_line", "format", "pillar_id",
-    "insight_ids", "angle", "cta", "owner", "status",
-]
-RUN_COLUMNS = [
-    "run_id", "trigger", "runtime", "mode", "source", "product_line", "status",
-    "rows_written", "reason", "started_at",
-]
-MAX_EVIDENCE = 300
-MAX_INSIGHTS_PER_ROW = 3
+TAB_INSIGHTS = "Insight hằng ngày"
+TAB_DB = "Research database"
+TAB_STRATEGY = "Chiến lược content"
+TAB_SOURCES = "Nguồn theo dõi"
+TAB_DIGEST = "Digest"
+TAB_CALENDAR = "Content Calendar"
 
-_STAMP = r"(\d{8})-([01]\d|2[0-3])([0-5]\d)([0-5]\d)"
-INSIGHT_ID_RE = re.compile(rf"^INS-{_STAMP}-(0[1-9]|[1-9]\d)$")
-RUN_ID_RE = re.compile(rf"^RUN-{_STAMP}$")
-CAL_ID_RE = re.compile(r"^CAL-(\d{4})-W(\d{2})-\d{2}$")
+KENH = {"Facebook", "Facebook Groups", "Quảng cáo Meta", "TikTok", "YouTube",
+        "Website blog", "Tìm kiếm web", "Google Trends"}
+TRUONG = {"chu_de", "tu_khoa", "execution", "offer", "cta", "pain", "pattern"}
+DB_STATUSES = {"", "gợi ý, chờ người duyệt", "đã duyệt", "bỏ", "mốc"}
+STRATEGY_STATUSES = {"đã duyệt", "nháp", "thông tin"}
+CALENDAR_STATUS = "đề xuất, chờ duyệt"
+MAX_INSIGHT_CHARS = 250
+MAX_OBS_PER_ROW = 3
+
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+OB_RE = re.compile(r"^OB\d{3,}$")
+CAL_RE = re.compile(r"^CAL-(\d{4})-W(\d{2})-\d{2}$")
 WEEK_RE = re.compile(r"^(\d{4})-W(\d{2})$")
-ISO_VN_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?\+07:00$")
-URL_RE = re.compile(r"^https?://\S+$")
-PILLAR_RE = re.compile(
-    r"(P-[A-Z]+-\d{2})\s*\|\s*(saas|hosting|server|email|general)\s*\|", re.IGNORECASE
-)
-# Only a line that starts with the label counts, so instruction prose that
-# mentions "Trạng thái: approved" can never approve a draft.
-STATUS_RE = re.compile(r"^\s*Trạng thái\s*:\s*(draft|approved)\b", re.IGNORECASE | re.MULTILINE)
+URL_RE = re.compile(r"^https?://\S+")
+NHAN_RE = re.compile(r"^(mới|lặp lại \(lần \d+\)|mốc)(\s*;.*)?$")
+TRUST_RE = re.compile(r"^(cao|vừa|thấp)\b")
+KEY_RE = re.compile(r"\(([a-z_]+)\)\s*$")
 SHEET_FORMULA_PREFIXES = ("=", "+", "-", "@")
 
+NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+      "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
 
-def sheet_safe(value):
-    """Prefix an apostrophe so Google Sheets stores the cell as literal text.
 
-    Verified on Drive CSV import: '=1+1 is kept as text and exports back as =1+1,
-    while =1+1 is evaluated and 0800 loses its leading zero.
-    """
-    if not value:
-        return value
-    if value.startswith(SHEET_FORMULA_PREFIXES) or re.fullmatch(r"0\d+", value):
-        return "'" + value
+# ---------------------------------------------------------------- workbook io
+
+def _norm(text):
+    return unicodedata.normalize("NFC", text or "").strip()
+
+
+def _col_index(ref):
+    n = 0
+    for ch in re.match(r"[A-Z]+", ref).group():
+        n = n * 26 + ord(ch) - 64
+    return n - 1
+
+
+def _xlsx_bytes(path):
+    raw = Path(path).read_bytes()
+    if raw[:2] == b"PK":
+        return raw
+    # A tool-result file: {"content": "<base64 xlsx>", ...}
+    return base64.b64decode(json.loads(raw.decode("utf-8"))["content"])
+
+
+def load_workbook(path):
+    """Return {tab title: [rows as lists of str]} for every tab."""
+    z = zipfile.ZipFile(io.BytesIO(_xlsx_bytes(path)))
+    shared = []
+    if "xl/sharedStrings.xml" in z.namelist():
+        for si in ET.fromstring(z.read("xl/sharedStrings.xml")).findall("m:si", NS):
+            shared.append("".join(t.text or "" for t in si.iter(f"{{{NS['m']}}}t")))
+    rels = {r.get("Id"): r.get("Target")
+            for r in ET.fromstring(z.read("xl/_rels/workbook.xml.rels"))}
+    tabs = {}
+    for sheet in ET.fromstring(z.read("xl/workbook.xml")).find("m:sheets", NS):
+        target = rels[sheet.get(f"{{{NS['r']}}}id")].lstrip("/")
+        target = target if target.startswith("xl/") else "xl/" + target
+        rows = []
+        for row in ET.fromstring(z.read(target)).iter(f"{{{NS['m']}}}row"):
+            cells = {}
+            for c in row.findall("m:c", NS):
+                v, kind = c.find("m:v", NS), c.get("t")
+                if kind == "s" and v is not None:
+                    val = shared[int(v.text)]
+                elif kind == "inlineStr":
+                    val = "".join(t.text or "" for t in c.iter(f"{{{NS['m']}}}t"))
+                else:
+                    val = v.text if v is not None else ""
+                cells[_col_index(c.get("r"))] = _norm(val)
+            if cells:
+                rows.append([cells.get(i, "") for i in range(max(cells) + 1)])
+        tabs[_norm(sheet.get("name"))] = rows
+    return tabs
+
+
+def normalize_date(value):
+    """Accept text YYYY-MM-DD or a Sheets date serial (e.g. 46303.0 = 2026-10-08)."""
+    if re.fullmatch(r"\d{5}(\.0+)?", value or ""):
+        return (dt.date(1899, 12, 30) + dt.timedelta(days=int(float(value)))).isoformat()
     return value
 
 
-def read_csv(path):
-    with open(path, newline="", encoding="utf-8-sig") as f:
-        reader = csv.DictReader(f, restval="")
-        rows = []
-        for row in reader:
-            row.pop(None, None)  # extra cells beyond the header
-            rows.append({k: (v or "") for k, v in row.items()})
-        return reader.fieldnames or [], rows
+def normalize_int(value):
+    return value[:-2] if re.fullmatch(r"\d+\.0", value or "") else value
 
 
-def split_multi(value):
-    return [v.strip() for v in (value or "").split("|") if v.strip()]
+DATE_KEYS = {"ngay", "ngay_dau", "ngay_gan_nhat", "ngay_dang"}
 
 
-def check_columns(path, fieldnames, expected, errors):
-    missing = [c for c in expected if c not in fieldnames]
+def header_key(label):
+    m = KEY_RE.search(_norm(label))
+    return m.group(1) if m else _norm(label)
+
+
+def as_records(rows):
+    """First row is the header; return (keys, [dict]) skipping fully blank rows."""
+    if not rows:
+        return [], []
+    keys = [header_key(h) for h in rows[0]]
+    records = []
+    for n, row in enumerate(rows[1:], start=2):
+        if not any(c.strip() for c in row):
+            continue
+        rec = {k: (row[i] if i < len(row) else "").strip() for i, k in enumerate(keys) if k}
+        for k in DATE_KEYS & rec.keys():
+            rec[k] = normalize_date(rec[k])
+        if "so_lan_thay" in rec:
+            rec["so_lan_thay"] = normalize_int(rec["so_lan_thay"])
+        rec["_row"] = n
+        records.append(rec)
+    return keys, records
+
+
+def sheet_safe(value):
+    """Text for update_values: a leading apostrophe keeps it literal in Sheets."""
+    value = "" if value is None else str(value)
+    return "'" + value if value else value
+
+
+# ---------------------------------------------------------------- data checks
+
+def require_tab(tabs, name, errors):
+    if name not in tabs:
+        errors.append(f"thiếu tab '{name}'")
+        return None
+    return tabs[name]
+
+
+def require_columns(tab, keys, expected, errors):
+    missing = [k for k in expected if k not in keys]
     if missing:
-        errors.append(f"{path}: thiếu cột {', '.join(missing)}")
+        errors.append(f"{tab}: thiếu cột {', '.join(missing)}")
     return not missing
 
 
-def validate_insight_row(row, rid):
-    errs = []
-    get = lambda c: row.get(c, "").strip()
-    for col in REQUIRED_INSIGHT:
-        if not get(col):
-            errs.append(f"cột {col} trống (thiếu dữ liệu)")
-    iid, run_id = get("insight_id"), get("run_id")
-    m = INSIGHT_ID_RE.match(iid)
-    if iid and not m:
-        errs.append("insight_id sai định dạng INS-YYYYMMDD-HHMMSS-NN (NN từ 01)")
-    if run_id and not RUN_ID_RE.match(run_id):
-        errs.append("run_id sai định dạng RUN-YYYYMMDD-HHMMSS")
-    elif m and run_id and run_id[4:] != iid[4:19]:
-        errs.append(f"run_id {run_id} không khớp thời điểm trong insight_id")
-    if get("captured_at") and not ISO_VN_RE.match(get("captured_at")):
-        errs.append("captured_at phải dạng 2026-10-09T08:05:00+07:00")
-    checks = (("product_line", PRODUCT_LINES), ("channel", CHANNELS), ("source_mode", SOURCE_MODES))
-    for col, allowed in checks:
-        if get(col) and get(col) not in allowed:
-            errs.append(f"{col} '{get(col)}' không hợp lệ")
-    if get("source_url") and not URL_RE.match(get("source_url")):
-        errs.append("source_url phải là link http(s):// đầy đủ")
-    if len(get("evidence")) > MAX_EVIDENCE:
-        errs.append(f"evidence dài {len(get('evidence'))} ký tự, tối đa {MAX_EVIDENCE}")
-    bad_tags = [t for t in split_multi(get("tags")) if t not in TAGS]
-    if bad_tags:
-        errs.append(f"tags không hợp lệ {bad_tags}")
-    if get("dup_of") and not INSIGHT_ID_RE.match(get("dup_of")):
-        errs.append("dup_of phải là một insight_id")
-    return errs
+def valid_kenh(value):
+    parts = [p.strip() for p in value.split("+") if p.strip()]
+    return bool(parts) and all(p in KENH for p in parts)
 
 
-def validate_insights(paths):
-    """Return (insights_by_id, errors). The first occurrence of an id wins."""
-    errors, insights = [], {}
-    for path in paths:
-        fieldnames, rows = read_csv(path)
-        if not check_columns(path, fieldnames, INSIGHT_COLUMNS, errors):
+def check_insights(tabs, errors):
+    rows = require_tab(tabs, TAB_INSIGHTS, errors)
+    if rows is None:
+        return
+    keys, recs = as_records(rows)
+    need = ["ngay", "san_pham", "kenh", "doi_thu", "truong", "insight", "tin_hieu", "nhan", "url"]
+    if not require_columns(TAB_INSIGHTS, keys, need, errors):
+        return
+    for r in recs:
+        at = f"{TAB_INSIGHTS} dòng {r['_row']}"
+        for k in ("ngay", "san_pham", "kenh", "truong", "insight", "nhan", "url"):
+            if not r[k]:
+                errors.append(f"{at}: cột {k} trống")
+        if r["ngay"] and not DATE_RE.match(r["ngay"]):
+            errors.append(f"{at}: ngày '{r['ngay']}' phải dạng YYYY-MM-DD")
+        if r["kenh"] and not valid_kenh(r["kenh"]):
+            errors.append(f"{at}: kênh '{r['kenh']}' không thuộc danh sách")
+        if r["truong"] and r["truong"] not in TRUONG:
+            errors.append(f"{at}: loại thông tin '{r['truong']}' không hợp lệ")
+        if len(r["insight"]) > MAX_INSIGHT_CHARS:
+            errors.append(f"{at}: insight dài {len(r['insight'])} ký tự (tối đa {MAX_INSIGHT_CHARS})")
+        if r["nhan"] and not NHAN_RE.match(r["nhan"]):
+            errors.append(f"{at}: nhãn '{r['nhan']}' phải bắt đầu bằng mới / lặp lại (lần N) / mốc")
+        if r["url"] and not URL_RE.match(r["url"]):
+            errors.append(f"{at}: URL phải bắt đầu bằng http(s)://")
+
+
+def load_observations(tabs, errors):
+    """Return {OB id: record}. Errors are added for every contract violation."""
+    rows = require_tab(tabs, TAB_DB, errors)
+    if rows is None:
+        return {}
+    keys, recs = as_records(rows)
+    need = ["id", "ngay_dau", "ngay_gan_nhat", "so_lan_thay", "san_pham", "doi_thu", "quan_sat",
+            "can_cu", "url", "y_nghia", "do_tin_cay", "content_idea", "trang_thai"]
+    if not require_columns(TAB_DB, keys, need, errors):
+        return {}
+    obs = {}
+    for r in recs:
+        at = f"{TAB_DB} dòng {r['_row']}"
+        oid = r["id"]
+        if not OB_RE.match(oid):
+            errors.append(f"{at}: mã '{oid}' phải dạng OB001")
+        elif oid in obs:
+            errors.append(f"{at}: mã {oid} bị trùng")
             continue
-        for n, row in enumerate(rows, start=2):
-            iid = row["insight_id"].strip()
-            rid = iid or f"{Path(path).name}:dòng {n}"
-            errors.extend(f"{rid}: {e}" for e in validate_insight_row(row, rid))
-            if iid:
-                if iid in insights:
-                    errors.append(f"{iid}: insight_id bị trùng giữa các dòng/file")
-                else:
-                    insights[iid] = row
-    return insights, errors
+        for k in ("ngay_dau", "ngay_gan_nhat"):
+            if not DATE_RE.match(r[k]):
+                errors.append(f"{at}: {k} '{r[k]}' phải dạng YYYY-MM-DD")
+        if DATE_RE.match(r["ngay_dau"]) and DATE_RE.match(r["ngay_gan_nhat"]) \
+                and r["ngay_gan_nhat"] < r["ngay_dau"]:
+            errors.append(f"{at}: ngày thấy gần nhất sớm hơn ngày đầu thấy")
+        if not re.fullmatch(r"[1-9]\d*", r["so_lan_thay"]):
+            errors.append(f"{at}: số lần thấy '{r['so_lan_thay']}' phải là số nguyên ≥ 1")
+        required = ["san_pham", "quan_sat", "can_cu", "url"]
+        if r["trang_thai"] != "mốc":
+            required += ["y_nghia", "do_tin_cay", "content_idea"]
+        for k in required:
+            if not r[k]:
+                errors.append(f"{at}: cột {k} trống")
+        if r["url"] and not URL_RE.match(r["url"]):
+            errors.append(f"{at}: URL phải bắt đầu bằng http(s)://")
+        if r["do_tin_cay"] and not TRUST_RE.match(r["do_tin_cay"]):
+            errors.append(f"{at}: độ tin cậy phải bắt đầu bằng cao / vừa / thấp")
+        if r["trang_thai"] not in DB_STATUSES:
+            errors.append(f"{at}: trạng thái '{r['trang_thai']}' không hợp lệ")
+        obs[oid] = r
+    return obs
 
 
-def read_strategy(path):
-    """Return (status, {pillar_id: product_line}, warnings)."""
-    text = unicodedata.normalize("NFC", Path(path).read_text(encoding="utf-8-sig"))
-    status = STATUS_RE.search(text)
-    pillars, warnings = {}, []
-    for pid, line in PILLAR_RE.findall(text):
-        pid, line = pid.upper(), line.lower()
-        if pid in pillars:
-            warnings.append(f"{pid}: mã pillar xuất hiện nhiều lần trong strategy, dùng dòng đầu tiên")
+def load_pillars(tabs, errors):
+    """Return {code: record} for every strategy row, plus status problems."""
+    rows = require_tab(tabs, TAB_STRATEGY, errors)
+    if rows is None:
+        return {}
+    keys, recs = as_records(rows)
+    if not require_columns(TAB_STRATEGY, keys, ["ma", "san_pham", "tru_cot", "trang_thai"], errors):
+        return {}
+    pillars = {}
+    for r in recs:
+        at = f"{TAB_STRATEGY} dòng {r['_row']}"
+        status = r["trang_thai"].lower()
+        if status not in STRATEGY_STATUSES:
+            errors.append(f"{at}: trạng thái '{r['trang_thai']}' phải là đã duyệt / nháp / thông tin")
+        if r["ma"] in pillars:
+            errors.append(f"{at}: mã {r['ma']} bị trùng, dùng dòng đầu tiên")
             continue
-        pillars[pid] = line
-    return (status.group(1).lower() if status else None), pillars, warnings
+        r["trang_thai"] = status
+        pillars[r["ma"]] = r
+    return pillars
 
+
+def check_calendar_tab(tabs, errors):
+    rows = tabs.get(TAB_CALENDAR)
+    if rows is None:
+        errors.append(f"thiếu tab '{TAB_CALENDAR}'")
+
+
+# ---------------------------------------------------------------- calendar
 
 def week_bounds(week):
     m = WEEK_RE.match(week)
@@ -170,142 +281,140 @@ def week_bounds(week):
         monday = dt.date.fromisocalendar(int(m.group(1)), int(m.group(2)), 1)
     except ValueError:
         return None
-    return monday, monday + dt.timedelta(days=6)
+    return monday, monday + dt.timedelta(days=4)  # posting days: Monday–Friday
 
 
-def validate_calendar_row(row, insights, pillars, seen_cal_ids):
+def split_ids(value):
+    return [v.strip() for v in re.split(r"[;,|]", value or "") if v.strip()]
+
+
+def check_calendar_row(r, obs, pillars, seen):
     errs = []
-    get = lambda c: row.get(c, "").strip()
-    cid, line, pid = get("cal_id"), get("product_line"), get("pillar_id")
-    if not CAL_ID_RE.match(cid):
-        errs.append("cal_id sai định dạng CAL-YYYY-Www-NN")
-    if cid in seen_cal_ids:
-        errs.append("trùng cal_id với dòng khác")
-    bounds = week_bounds(get("week"))
+    if not CAL_RE.match(r.get("ma_lich", "")):
+        errs.append("mã lịch phải dạng CAL-YYYY-Www-NN")
+    if r.get("ma_lich") in seen:
+        errs.append("trùng mã lịch")
+    bounds = week_bounds(r.get("tuan", ""))
     if bounds is None:
-        errs.append(f"week '{get('week')}' không hợp lệ (dạng 2026-W42)")
+        errs.append(f"tuần '{r.get('tuan', '')}' phải dạng 2026-W42")
     else:
         try:
-            day = dt.date.fromisoformat(get("date"))
+            day = dt.date.fromisoformat(r.get("ngay_dang", ""))
             if not bounds[0] <= day <= bounds[1]:
-                errs.append(f"date {day} nằm ngoài tuần {get('week')}")
+                errs.append(f"ngày đăng {day} không thuộc thứ Hai–thứ Sáu của tuần {r['tuan']}")
         except ValueError:
-            errs.append(f"date '{get('date')}' không hợp lệ (dạng YYYY-MM-DD)")
-    if line not in PRODUCT_LINES:
-        errs.append(f"product_line '{line}' không hợp lệ")
-    if get("status") != "de-xuat":
-        errs.append("status phải là de-xuat")
-    pillar_line = pillars.get(pid)
-    if pillar_line is None:
-        errs.append(f"pillar {pid or '(trống)'} không có trong strategy")
-    elif pillar_line not in (line, "general"):
-        errs.append(f"pillar {pid} thuộc '{pillar_line}', không khớp product_line '{line}'")
-    ids = split_multi(get("insight_ids"))
+            errs.append(f"ngày đăng '{r.get('ngay_dang', '')}' phải dạng YYYY-MM-DD")
+    product = r.get("san_pham", "")
+    for k in ("kenh", "san_pham", "goc_tieu_de", "dinh_dang"):
+        if not r.get(k):
+            errs.append(f"cột {k} trống")
+    if r.get("trang_thai") != CALENDAR_STATUS:
+        errs.append(f"trạng thái phải là '{CALENDAR_STATUS}'")
+    pillar = pillars.get(r.get("ma_tru_cot", ""))
+    if pillar is None:
+        errs.append(f"trụ cột '{r.get('ma_tru_cot', '')}' không có trong Chiến lược content")
+    elif pillar["trang_thai"] != "đã duyệt":
+        errs.append(f"trụ cột {pillar['ma']} đang '{pillar['trang_thai']}', chưa được duyệt")
+    elif pillar["san_pham"] != product:
+        errs.append(f"trụ cột {pillar['ma']} thuộc {pillar['san_pham']}, không phải {product}")
+    ids = split_ids(r.get("ma_quan_sat", ""))
     if not ids:
-        errs.append("không có insight_ids")
-    if len(ids) > MAX_INSIGHTS_PER_ROW:
-        errs.append(f"quá {MAX_INSIGHTS_PER_ROW} insight cho một bài")
+        errs.append("không có mã quan sát")
+    if len(ids) > MAX_OBS_PER_ROW:
+        errs.append(f"quá {MAX_OBS_PER_ROW} quan sát cho một bài")
     if len(set(ids)) != len(ids):
-        errs.append("một insight bị lặp trong cùng dòng")
-    for iid in dict.fromkeys(ids):
-        insight = insights.get(iid)
-        if insight is None:
-            errs.append(f"insight {iid} không tồn tại trong kho")
-        elif insight["dup_of"].strip():
-            errs.append(f"insight {iid} là bản trùng của {insight['dup_of']}")
-        elif pillar_line != "general" and insight["product_line"].strip() not in (line, "general"):
-            errs.append(f"insight {iid} thuộc '{insight['product_line']}', không khớp product_line '{line}'")
+        errs.append("một mã quan sát bị lặp")
+    for oid in dict.fromkeys(ids):
+        o = obs.get(oid)
+        if o is None:
+            errs.append(f"quan sát {oid} không có trong Research database")
+        elif o["trang_thai"] in ("mốc", "bỏ"):
+            errs.append(f"quan sát {oid} đang '{o['trang_thai']}', không dùng cho lịch")
+        elif o["san_pham"] != product:
+            errs.append(f"quan sát {oid} thuộc {o['san_pham']}, không phải {product}")
     return errs
 
 
-def validate_calendar(path, insights, pillars):
-    """Return (rejected_cal_ids, errors, valid_rows, fieldnames)."""
+def read_draft(path):
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.reader(f))
+    keys, recs = as_records([[_norm(c) for c in row] for row in rows])
+    return keys, recs
+
+
+CALENDAR_KEYS = ["ma_lich", "tuan", "ngay_dang", "kenh", "san_pham", "ma_tru_cot", "ma_quan_sat",
+                 "goc_tieu_de", "dinh_dang", "cta", "nguoi_phu_trach", "trang_thai"]
+
+
+def validate_calendar(draft_path, obs, pillars):
+    keys, recs = read_draft(draft_path)
     errors, rejected, valid, seen = [], [], [], set()
-    fieldnames, rows = read_csv(path)
-    if not check_columns(path, fieldnames, CALENDAR_COLUMNS, errors):
-        return [r.get("cal_id", "?") for r in rows], errors, [], fieldnames
-    for row in rows:
-        cid = row["cal_id"].strip() or "?"
-        row_errors = validate_calendar_row(row, insights, pillars, seen)
-        seen.add(cid)
-        if row_errors:
+    missing = [k for k in CALENDAR_KEYS if k not in keys]
+    if missing:
+        return [f"lịch nháp thiếu cột {', '.join(missing)}"], [r.get("ma_lich", "?") for r in recs], []
+    for r in recs:
+        cid = r["ma_lich"] or f"dòng {r['_row']}"
+        row_errs = check_calendar_row(r, obs, pillars, seen)
+        seen.add(r["ma_lich"])
+        if row_errs:
             rejected.append(cid)
-            errors.extend(f"{cid}: {e}" for e in row_errors)
+            errors.extend(f"{cid}: {e}" for e in row_errs)
         else:
-            valid.append(row)
-    return rejected, errors, valid, fieldnames
+            valid.append(r)
+    return errors, rejected, valid
 
 
-def validate_runs(paths):
-    errors = []
-    for path in paths:
-        fieldnames, rows = read_csv(path)
-        if not check_columns(path, fieldnames, RUN_COLUMNS, errors):
-            continue
-        for n, row in enumerate(rows, start=2):
-            where = f"{Path(path).name}:dòng {n}"
-            if not RUN_ID_RE.match(row["run_id"].strip()):
-                errors.append(f"{where}: run_id sai định dạng")
-            if row["status"].strip() not in RUN_STATUSES:
-                errors.append(f"{where}: status '{row['status']}' không hợp lệ")
-            elif row["status"].strip() != "ok" and not row["reason"].strip():
-                errors.append(f"{where}: thiếu reason khi status là {row['status']}")
-    return errors
+# ---------------------------------------------------------------- cli
 
-
-def write_csv(path, fieldnames, rows):
-    with open(path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, quoting=csv.QUOTE_ALL, extrasaction="ignore")
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({k: sheet_safe(row.get(k, "")) for k in fieldnames})
-
-
-def report(errors, summary, label="ERRORS"):
-    print(summary)
-    print(f"{label}: {len(errors)}")
-    for e in errors:
+def report(label, items):
+    print(f"{label}: {len(items)}")
+    for e in items:
         print(f"- {e}")
 
 
 def main(argv=None):
-    p = argparse.ArgumentParser(description="Kiểm tra truy vết insight → calendar → strategy.")
-    p.add_argument("--insights", nargs="+", required=True,
-                   help="Một hoặc nhiều file CSV insight (mỗi file Drive xuất ra một file, không gộp)")
-    p.add_argument("--calendar", help="File CSV calendar cần kiểm")
-    p.add_argument("--strategy", help="Strategy đã xuất ra text (bắt buộc khi có --calendar)")
-    p.add_argument("--clean-out", help="Ghi các dòng calendar hợp lệ (đã an toàn cho Sheet) ra file này")
-    p.add_argument("--sheet-safe-out", help="Ghi insight (đã an toàn cho Sheet) ra file này để upload")
-    p.add_argument("--runs", nargs="+", help="File CSV run log cần kiểm")
+    p = argparse.ArgumentParser(description="Kiểm tra Research database và lịch tuần (truy vết quan sát → trụ cột).")
+    p.add_argument("--workbook", required=True,
+                   help="File .xlsx xuất từ Drive, hoặc file JSON kết quả công cụ có trường content (base64)")
+    p.add_argument("--check", choices=["data", "none"], default="data",
+                   help="data: kiểm các tab dữ liệu (mặc định); none: bỏ qua")
+    p.add_argument("--calendar-draft", help="CSV lịch nháp, tiêu đề là khoá cột (ma_lich, tuan, …)")
+    p.add_argument("--products", help="Sản phẩm cần lập lịch, ngăn bằng dấu phẩy (kiểm có trụ cột đã duyệt)")
+    p.add_argument("--clean-out", help="Ghi các dòng lịch hợp lệ ra file JSON (mảng 2 chiều cho update_values)")
     args = p.parse_args(argv)
 
-    insights, errors = validate_insights(args.insights)
-    run_errors = validate_runs(args.runs) if args.runs else []
+    tabs = load_workbook(args.workbook)
+    data_errors = []
+    if args.check == "data":
+        check_insights(tabs, data_errors)
+    obs = load_observations(tabs, data_errors if args.check == "data" else [])
+    pillars = load_pillars(tabs, data_errors if args.check == "data" else [])
+    if args.check == "data":
+        check_calendar_tab(tabs, data_errors)
 
-    if not args.calendar:
-        if args.sheet_safe_out:
-            rows = []
-            for path in args.insights:
-                rows.extend(read_csv(path)[1])
-            write_csv(args.sheet_safe_out, INSIGHT_COLUMNS, rows)
-        report(errors + run_errors, f"Insight: {len(insights)} dòng")
-        return 1 if (errors or run_errors) else 0
+    if not args.calendar_draft:
+        print(f"Workbook: {len(obs)} quan sát, {sum(1 for x in pillars.values() if x['trang_thai'] == 'đã duyệt')} trụ cột đã duyệt")
+        report("ERRORS", data_errors)
+        return 1 if data_errors else 0
 
-    if not args.strategy:
-        p.error("--strategy là bắt buộc khi kiểm calendar")
-    status, pillars, strategy_warnings = read_strategy(args.strategy)
-    if status != "approved":
-        print(f"STRATEGY_NOT_APPROVED: trạng thái hiện tại là '{status or 'không tìm thấy'}'. "
-              "Calendar chỉ chạy khi strategy có dòng bắt đầu bằng 'Trạng thái: approved'.")
-        return 2
+    if args.products:
+        products = [_norm(x) for x in args.products.split(",") if x.strip()]
+        lacking = [pr for pr in products
+                   if not any(x["san_pham"] == pr and x["trang_thai"] == "đã duyệt" for x in pillars.values())]
+        if lacking:
+            print("NO_APPROVED_PILLAR: " + ", ".join(lacking) +
+                  " — chưa có trụ cột 'đã duyệt' trong Chiến lược content.")
+            return 2
 
-    rejected, cal_errors, valid, fieldnames = validate_calendar(args.calendar, insights, pillars)
+    cal_errors, rejected, valid = validate_calendar(args.calendar_draft, obs, pillars)
     if args.clean_out:
-        write_csv(args.clean_out, fieldnames or CALENDAR_COLUMNS, valid)
-    report(cal_errors, f"Calendar: {len(valid)} dòng hợp lệ, {len(rejected)} dòng bị loại")
-    if errors or strategy_warnings:
-        report(errors + strategy_warnings, "Cảnh báo dữ liệu cũ (không làm loại dòng lịch):",
-               label="INSIGHT_WARNINGS")
+        Path(args.clean_out).write_text(
+            json.dumps([[sheet_safe(r[k]) for k in CALENDAR_KEYS] for r in valid], ensure_ascii=False),
+            encoding="utf-8")
+    print(f"Lịch: {len(valid)} dòng hợp lệ, {len(rejected)} dòng bị loại")
+    report("ERRORS", cal_errors)
+    if data_errors:
+        report("DATA_WARNINGS", data_errors)
     print("VALID_ROWS: " + str(len(valid)))
     print("REJECTED: " + ",".join(rejected))
     return 1 if rejected else 0

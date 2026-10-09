@@ -7,7 +7,7 @@
     {
       "name": "redsun-mkt",
       "source": "./",
-      "description": "Research insight hằng ngày + Content Calendar tuần truy vết được, lưu trên Google Drive."
+      "description": "Research đối thủ hằng ngày + Content Calendar tuần truy vết được, lưu trên Google Sheet chung."
     }
   ],
   "metadata": {

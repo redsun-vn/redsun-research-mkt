@@ -1,3 +1,0 @@
-"insight_id","run_id","captured_at","product_line","competitor","channel","source_mode","source_url","observation","evidence","meaning","content_idea","tags","dup_of"
-"INS-20261005-080000-01","RUN-20261005-080000","2026-10-05T08:05:00+07:00","cloud","Đối thủ A","facebook_ads","chrome","ftp://bad","","Trích","Ý nghĩa","Ý tưởng","giam_gia",""
-"bad-id","RUN-20261005-080000","2026-10-05T08:05:00+07:00","email","Đối thủ B","web","auto","https://ok.vn","Quan sát","Căn cứ","Ý nghĩa","Ý tưởng","offer",""

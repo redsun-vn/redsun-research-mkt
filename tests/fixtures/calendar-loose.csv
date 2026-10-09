@@ -1,6 +1,0 @@
-"cal_id","week","date","channel","product_line","format","pillar_id","insight_ids","angle","cta","owner","status"
-"CAL-2026-W42-01","2026-W42","2026-10-12","facebook","hosting","bài viết","P-HOSTING-01","INS-20261005-080000-01|INS-20261005-080000-01","Lặp insight","Xem","","de-xuat"
-"CAL-2026-W42-02","2026-W42","2026-10-13","facebook","hosting","bài viết","P-HOSTING-01","INS-20261005-080000-02","Insight email cho dòng hosting","Xem","","de-xuat"
-"CAL-2026-W42-02","2026-W99","1999-01-01","facebook","hosting","bài viết","P-HOSTING-01","INS-20261005-080000-01","Trùng cal_id, tuần sai, ngày sai","Xem","","approved"
-"CAL-2026-W42-04","2026-W42","2026-10-20","facebook","hosting","bài viết","P-HOSTING-01","INS-20261005-080000-01","Ngày ngoài tuần","Xem","","de-xuat"
-"CAL-2026-W42-05","2026-W42","2026-10-15","facebook","","bài viết","P-GENERAL-01","INS-20261005-080000-01","product_line trống","Xem","","de-xuat"

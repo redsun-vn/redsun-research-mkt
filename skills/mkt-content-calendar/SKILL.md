@@ -1,63 +1,70 @@
 ---
 name: mkt-content-calendar
-description: Lập Content Calendar tuần cho redsun.vn theo từng kênh và dòng sản phẩm, chỉ từ insight thật trong kho insight trên Google Drive và pillar của Content Strategy đã duyệt — mỗi dòng lịch truy ngược được về insight_id và pillar_id. Dùng khi người dùng nói "lập lịch tuần", "content calendar", "lên lịch nội dung tuần sau", hoặc khi lịch tự động thứ Hai gọi.
+description: Tạo Content Calendar tuần cho Redsun ngay khi team MKT hỏi (hoặc theo lịch thứ Hai) — lấy Content Idea từ các quan sát trong Research database và trụ cột đã duyệt trong Chiến lược content, ghi vào tab Content Calendar; mọi dòng lịch truy ngược được về mã quan sát (OB) và mã trụ cột. Dùng khi người dùng nói "lập lịch tuần", "content calendar", "lên lịch nội dung tuần sau/tuần này", "lịch cho SIPOS/WEBINO", "duyệt strategy", "strategy đã ổn chưa".
 ---
 
-# mkt-content-calendar — lịch nội dung tuần truy vết được
+# mkt-content-calendar — lịch tuần từ Content Idea có căn cứ
 
-Trước khi làm, đọc (tính từ thư mục chứa file này):
+Đọc trước (tính từ "Base directory" của skill):
 - `../../shared/working-rules.md` — **bắt buộc**.
-- `../../shared/data-contract.md` — cột lịch, cách đọc Drive.
-- `references/calendar-rules.md` — cách chọn insight, phân bổ pillar, viết file review.
+- `../../shared/data-contract.md` — tab Content Calendar, Chiến lược content, Research database.
+- `references/calendar-rules.md` — nhịp đăng, tỷ lệ, cách chọn Content Idea, mẫu Digest.
 
-**Nguyên tắc số 1:** không có dòng lịch nào được tự nghĩ ra. Mỗi dòng phải dựa trên 1–3 insight có thật và 1 pillar trong strategy đã duyệt. Thiếu insight cho một pillar → ghi vào phần "Cần research thêm", **không** bịa topic.
+**Nguyên tắc số 1:** không tự nghĩ topic. Mỗi dòng lịch = một **Content Idea có sẵn** trong Research database (qua mã OB) được đặt vào **một trụ cột đã duyệt**. Trụ cột thiếu quan sát → ghi vào "Cần research thêm", không bịa.
 
-## 1. Xác định tuần
+Chạy được **bất cứ lúc nào** người dùng hỏi, không chỉ thứ Hai.
 
-Mặc định là tuần ISO kế tiếp (gọi vào thứ Hai thì lập cho chính tuần đó nếu người dùng nói "tuần này"). `week = YYYY-Www`. Ngày đăng nằm trong tuần đó.
+## 1. Xác định tuần và sản phẩm
 
-## 2. Kiểm tra strategy đã duyệt
+- Tuần: người dùng nói "tuần này" → tuần ISO hiện tại; "tuần sau" hoặc không nói → tuần kế tiếp. Lời nhắn theo lịch ghi "tuần này" → tuần hiện tại. `tuan = YYYY-Www`; ngày đăng thứ Hai–thứ Sáu.
+- Sản phẩm: người dùng nêu thì theo đó; không thì mọi sản phẩm có trụ cột `đã duyệt` (mặc định SIPOS, WEBINO; REDSUN BOS tạm ngoài lịch theo ghi chú trong bảng).
 
-1. Tìm thư mục `RedSun-MKT-Research` → `config/strategy` (Doc), export `text/plain`.
-2. Không có dòng `Trạng thái: approved` → **dừng**, không tạo file nào, và nói:
-   "Content Strategy vẫn đang ở bản nháp nên mình chưa lập lịch được (để tránh ý tưởng lệch chiến lược). Nhờ <Người duyệt trong strategy> mở file strategy trên Drive, kiểm tra các pillar, rồi đổi dòng 'Trạng thái: draft' thành 'Trạng thái: approved'. Link: <link>."
-3. Lấy danh sách pillar từ các dòng `P-<LINE>-NN | <product_line> | <tên>` cùng mục tiêu, kênh, tần suất, tỷ trọng.
+## 2. Đọc dữ liệu (Sheets connector)
 
-## 3. Đọc kho insight
+1. Tìm file như `mkt-research` mục 1.
+2. `get_values`:
+   - `'Chiến lược content'!A:H` — trụ cột, giai đoạn, trạng thái; dòng `thông tin`: KÊNH (nhịp đăng), TỶ LỆ, TM-* (thông điệp chủ đạo), K-* (vai trò kênh), NN (ngành mũi nhọn).
+   - `'Research database'!A:M` — quan sát và Content Idea.
+   - `'Nguồn theo dõi'!A:I` — kênh **của mình** của từng sản phẩm (link Fanpage/TikTok).
+   - `'Content Calendar'!A:L` — mã lịch đã có (tránh trùng; tuần này đã có lịch → hỏi người dùng muốn **lập thêm** hay **chỉ xem**; theo lịch tự động: bỏ qua, báo đã có).
+3. Sản phẩm không có trụ cột `đã duyệt` → không lập lịch cho sản phẩm đó và nói: "Chiến lược content của <SP> chưa được duyệt. Người duyệt mở tab Chiến lược content, kiểm tra các dòng 'nháp' rồi đổi thành 'đã duyệt'." **Không tự đổi.**
 
-- Đọc `config/config` (kênh team đăng) và `config/settings` (số ngày lookback, mặc định 30).
-- `search_files` trong `insights/` với `createdTime` trong lookback. Export từng Sheet ra `text/csv`, gộp lại. Bỏ dòng có `dup_of`.
-- Kho trống → dừng và nói "Kho insight chưa có dữ liệu trong <n> ngày qua, mình cần chạy research trước."
+**Câu hỏi "duyệt strategy / strategy đã ổn chưa":** tóm tắt các trụ cột theo sản phẩm và trạng thái, chỉ ra dòng `nháp`, hướng dẫn người duyệt tự đổi. Dừng ở đó.
 
-## 4. Soạn lịch
+## 3. Soạn lịch nháp
 
 Theo `references/calendar-rules.md`:
-- Với mỗi kênh × dòng sản phẩm trong strategy: số bài theo tần suất của pillar; chọn pillar theo tỷ trọng.
-- Mỗi bài: chọn 1–3 insight cùng `product_line` (hoặc `general`) khớp với mục tiêu/pain point của pillar. Viết `angle` và `cta` **dựa trên evidence của các insight đó**.
-- `cal_id = CAL-YYYY-Www-NN`, `status = de-xuat`, `owner` để trống.
+- Số bài theo nhịp đăng (dòng KÊNH) trên các kênh **sản phẩm đang có** (dòng `của mình` có link). Kênh chưa có → không xếp, ghi vào "Cần chuẩn bị kênh".
+- Chia bài theo TỶ LỆ (mặc định 60% trụ cột giai đoạn hiện tại, 25% giai đoạn trước, 15% theo ngành/nhóm khách).
+- Mỗi bài: chọn 1–3 quan sát cùng sản phẩm (không `mốc`, không `bỏ`) có Content Idea khớp trụ cột; ưu tiên `Số lần thấy` cao, độ tin cậy `cao`/`vừa`, `Ngày thấy gần nhất` mới. Content Idea ghi "chưa nên làm…/cần xác minh" → chỉ dùng khi đã có điều kiện, nếu không thì bỏ qua.
+- `goc_tieu_de`: phát triển **từ Content Idea của quan sát đó** theo góc của trụ cột và vai trò kênh (K-*). `cta` theo nguồn/chiến lược.
+- `ma_lich = CAL-YYYY-Www-NN` (NN tiếp nối mã đã có trong tuần), `trang_thai = đề xuất, chờ duyệt`, `nguoi_phu_trach` để trống.
 
-## 5. Kiểm tra truy vết (bắt buộc)
+## 4. Kiểm tra truy vết (bắt buộc)
 
-Nếu chạy được lệnh (Claude Code, Cowork):
-1. Lưu ra file tạm ngoài thư mục plugin: `/tmp/redsun-mkt/cal.csv`, `/tmp/redsun-mkt/insights.csv` (gộp, giữ cả dòng `dup_of`), `/tmp/redsun-mkt/strategy.txt`.
-2. Chạy:
-   `python3 "<thư mục skill này>/../../scripts/validate_trace.py" --calendar /tmp/redsun-mkt/cal.csv --insights /tmp/redsun-mkt/insights.csv --strategy /tmp/redsun-mkt/strategy.txt --clean-out /tmp/redsun-mkt/cal-clean.csv`
-3. Exit `2` → strategy chưa duyệt (quay lại bước 2). Dòng trong `REJECTED:` → đưa vào mục "Đã loại" cùng lý do in ra. Chỉ ghi `cal-clean.csv` lên Drive.
+Chạy được lệnh (Claude Code, Cowork):
+1. Ghi lịch nháp ra file tạm riêng cho lần chạy (ví dụ `/tmp/redsun-mkt/<YYYY-Www>-<HHMMSS>/draft.csv`), dòng đầu là khoá cột: `ma_lich,tuan,ngay_dang,kenh,san_pham,ma_tru_cot,ma_quan_sat,goc_tieu_de,dinh_dang,cta,nguoi_phu_trach,trang_thai`.
+2. Xuất Research database ra `.xlsx` bằng Drive `download_file_content` (`exportMimeType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`), lấy đường dẫn file kết quả.
+3. Chạy:
+   `python3 "<Base directory>/../../scripts/validate_trace.py" --workbook "<file xuất>" --check none --calendar-draft "<draft.csv>" --products "<SP1>,<SP2>" --clean-out "<thư mục>/clean.json"`
+4. Mã thoát `2` → sản phẩm thiếu trụ cột đã duyệt (quay lại bước 2). Dòng trong `REJECTED:` → đưa vào mục "đã loại" kèm lý do in ra. `VALID_ROWS: 0` → không ghi lịch, chỉ ghi Digest.
 
-Không chạy được lệnh (chat thường): với **từng dòng**, đối chiếu từng `insight_id` có trong bảng insight đã đọc và không có `dup_of`; `pillar_id` có trong strategy và cùng product line (hoặc `general`). Ghi rõ trong file review: "Kiểm tra thủ công, không có máy kiểm tra" và khuyên lần sau chạy trên Cowork/Claude Code.
+Không chạy được lệnh: với **từng dòng**, đối chiếu mã trụ cột (đã duyệt, cùng sản phẩm), từng mã OB (có thật, cùng sản phẩm, không mốc/bỏ), ngày thứ Hai–thứ Sáu của tuần. Dòng sai → loại. Ghi trong Digest: "kiểm tra thủ công".
 
-## 6. Ghi lên Drive (không ghi đè)
+## 5. Ghi vào Sheet
 
-1. Kiểm tra `calendar/` đã có `CAL_YYYY-Www` chưa; có rồi thì đặt tên `CAL_YYYY-Www_v2` (v3…).
-2. `create_file` Sheet lịch (CSV → Sheet, như insight).
-3. `create_file` Doc review `CAL_YYYY-Www_review` (upload `text/plain`), theo mẫu trong `references/calendar-rules.md`: độ phủ pillar, insight được dùng nhiều nhất, "Cần research thêm", "Đã loại".
+1. Nối các dòng hợp lệ vào cuối `'Content Calendar'` bằng `update_values`. Có `clean.json` → dùng đúng mảng đó (đã có dấu `'`). Không có → tự thêm `'` vào mọi ô.
+2. Nối vào `'Digest'` 2 dòng:
+   - `Lịch tuần YYYY-Www`: số bài theo sản phẩm/kênh, độ phủ trụ cột, trụ cột thiếu quan sát (Cần research thêm), kênh chưa có (Cần chuẩn bị kênh), cách kiểm tra (máy/thủ công).
+   - `Lịch tuần YYYY-Www — đã loại`: mã + lý do, hoặc `không có`.
+3. Đọc lại vùng vừa ghi.
 
-## 7. Báo kết quả
+## 6. Báo kết quả
 
 ```
-Đã lập lịch tuần <YYYY-Www>: <n> bài cho <các kênh>.
-- Mỗi bài đều ghi rõ dựa trên insight nào và pillar nào.
-- Pillar còn thiếu insight: <danh sách hoặc "không">
-- Ý tưởng bị loại vì không truy được nguồn: <số>
-Lịch: <link Sheet> · Giải thích: <link Doc>
+Đã lập lịch tuần <YYYY-Www>: <n> bài (<SP>: <a> Facebook, <b> TikTok…).
+- Mỗi bài dựa trên Content Idea của quan sát OB… và trụ cột đã duyệt.
+- Trụ cột cần research thêm: <danh sách | không có>
+- Ý tưởng bị loại vì không truy vết được: <số>
+Xem lịch: <link Research database> (tab Content Calendar). Tất cả đang ở trạng thái "đề xuất, chờ duyệt".
 ```

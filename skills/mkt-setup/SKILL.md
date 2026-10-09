@@ -1,78 +1,61 @@
 ---
 name: mkt-setup
-description: Cài đặt lần đầu (hoặc bổ sung) hệ thống research Marketing redsun.vn — kiểm tra Google Drive/Chrome, tạo thư mục kho insight trên Drive, phỏng vấn để điền đối thủ/keyword/kênh cho 4 dòng sản phẩm, soạn bản nháp Content Strategy chờ duyệt, chạy thử research. Dùng khi người dùng nói "chạy setup", "cài đặt", "thiết lập", "thêm đối thủ", "sửa cấu hình", hoặc khi skill khác báo chưa cài đặt.
+description: Cài đặt hệ thống research Marketing Redsun — kiểm tra Google Drive/Google Sheets/Chrome, tạo Google Sheet "Redsun MKT — Research database" theo mẫu team (7 tab, đã có nguồn theo dõi và chiến lược content của SIPOS, WEBINO, REDSUN BOS) hoặc kết nối vào Sheet team đã có, chạy thử research; thêm sản phẩm mới (ví dụ SaaS, hosting, server, email) với đối thủ, từ khoá và trụ cột nháp. Dùng khi người dùng nói "chạy setup", "cài đặt", "thêm sản phẩm", "thêm đối thủ", "sửa nguồn theo dõi", hoặc khi skill khác báo chưa cài đặt.
 ---
 
-# mkt-setup — cài đặt cho team MKT
+# mkt-setup — cài đặt và cấu hình
 
-Đọc trước (tính từ thư mục chứa file này):
-- `../../shared/working-rules.md` — **bắt buộc**, đặc biệt phần nói chuyện với người không biết kỹ thuật.
-- `../../shared/data-contract.md` — thư mục Drive, định dạng file.
-- `references/interview-questions.md` — câu hỏi phỏng vấn.
-- `references/strategy-drafting-guide.md` — soạn strategy nháp.
-- Template ở `../../templates/`: `config.md`, `strategy.md`, `settings.md`, `drive-readme.md`.
-
-Mở đầu bằng: "Mình sẽ cài đặt giúp bạn, mất khoảng 10–15 phút. Mình hỏi từng câu một, bạn cứ trả lời tự nhiên nhé."
+Đọc trước (tính từ "Base directory" của skill):
+- `../../shared/working-rules.md` — **bắt buộc**.
+- `../../shared/data-contract.md` — 7 tab, cột, quy tắc ghi.
+- `references/add-product-guide.md` — khi thêm sản phẩm hoặc đối thủ.
+- Template từng tab: `../../templates/sheet/1-huong-dan.csv` … `7-content-calendar.csv` (tên tab theo thứ tự: Hướng dẫn, Nguồn theo dõi, Chiến lược content, Insight hằng ngày, Research database, Digest, Content Calendar).
 
 ## Bước 1 — Kiểm tra công cụ (tự làm, chỉ báo kết quả)
 
-| Kiểm tra | Cách | Nếu không được |
+| Kiểm tra | Cách | Không được thì |
 |---|---|---|
-| Google Drive | Gọi `search_files` với `title = 'RedSun-MKT-Research'` | Dừng. Hướng dẫn bật Google Drive theo `SETUP.md` bước "Kết nối Google Drive" (một thao tác mỗi lần), rồi thử lại |
-| Đọc web | WebFetch `https://trends.google.com/trending?geo=VN` | Ghi nhận; research vẫn chạy được phần còn lại |
-| Chrome | Có công cụ Claude in Chrome không | Ghi nhận "chưa có Chrome — phần Fanpage/TikTok sẽ cần cài sau" |
-| Môi trường | Claude Code / Cowork / chat thường | Ghi nhận để chọn cách lên lịch |
+| Google Drive | `search_files` với `title = 'Redsun MKT — Research database'` | Dừng; hướng dẫn kết nối theo `../../SETUP.md` Bước 3 |
+| Google Sheets | Có công cụ `get_values`/`update_values` của Google Sheets | Dừng; hướng dẫn kết nối theo `../../SETUP.md` Bước 3 |
+| Đọc web | WebFetch `https://trends.google.com/trending?geo=VN` | Ghi nhận |
+| Chrome | Có công cụ Claude in Chrome | Ghi nhận "phần Facebook/TikTok/quảng cáo cần Chrome, cài sau cũng được" |
 
-Báo người dùng bằng 3–4 dòng dấu ✅/⚠️, không thuật ngữ.
+Báo 3–4 dòng ✅/⚠️, không thuật ngữ.
 
-## Bước 2 — Thư mục trên Drive
+## Bước 2 — Sheet dùng chung
 
-- **Đã có** `RedSun-MKT-Research`: nói "Mình thấy team đã cài trước đó." Đọc `config/config`, `config/strategy`, `config/settings`, rồi chỉ hỏi phần còn trống (`<điền>`) hoặc phần người dùng muốn sửa. Không tạo thư mục trùng.
-- **Chưa có**: hỏi một câu:
-  "Bạn muốn lưu kho dữ liệu ở đâu? (1) Bộ nhớ dùng chung của công ty (Shared Drive) — nên chọn, dữ liệu thuộc về team; (2) Drive của riêng bạn rồi chia sẻ cho team."
-  - (1): nhờ họ dán link một thư mục trong Shared Drive mà họ có quyền thêm file. Lấy ID từ link, tạo `RedSun-MKT-Research` bên trong.
-  - (2): tạo ở gốc My Drive.
-  - Tạo các thư mục con: `config`, `config/_cu`, `insights`, `runs`, `calendar`. Tạo Doc `README` từ `templates/drive-readme.md`.
+- **Đã có** (tìm thấy đúng 1 file): "Team đã có bảng Research database, mình dùng luôn." Đọc `get_spreadsheet` (`fields: ["sheets.properties"]`) và so với 7 tab; thiếu tab `Content Calendar` hoặc cột `Trạng thái` ở Chiến lược content → bổ sung (xem Bước 3 mục 4–5), không đụng dữ liệu khác. Sang Bước 4.
+- **Nhiều file**: liệt kê tên + người sở hữu, hỏi dùng file nào.
+- **Chưa có**: hỏi một câu: "Mình tạo bảng Research database mới cho team nhé? Bảng sẽ có sẵn danh sách đối thủ và chiến lược content của SIPOS, WEBINO, REDSUN BOS từ bảng mẫu team đã làm." Hỏi thêm: lưu ở **Drive chung của công ty** (khuyên dùng — nhờ dán link thư mục) hay Drive cá nhân rồi chia sẻ.
 
-Tạo Doc: `create_file` với `contentMimeType: text/plain`, `textContent` là nội dung, không đặt `disableConversionToGoogleType` → Drive tạo Google Doc.
+## Bước 3 — Tạo Sheet mới từ template
 
-## Bước 3 — Phỏng vấn cấu hình
+1. Drive `create_file`: `title = "Redsun MKT — Research database"`, `contentMimeType = "application/vnd.google-apps.spreadsheet"`, `parentId` = thư mục người dùng chọn (nếu có).
+2. `update_spreadsheet` một lần: đổi tên tab đầu (`sheetId 0`) thành `Hướng dẫn`; `addSheet` 6 tab còn lại theo đúng thứ tự (đặt `sheetId` 1…6).
+3. Với từng tab, đọc file CSV template tương ứng và ghi toàn bộ bằng `update_values` từ ô `A1`. **Mọi ô có dấu `'` ở đầu** (ô trống để trống).
+4. `update_spreadsheet` một lần cho định dạng: hàng 1 in đậm và cố định (frozen) ở mọi tab; tự giãn độ rộng cột chữ (`autoResizeDimensions`) hoặc đặt độ rộng hợp lý; bật xuống dòng (wrap) cho cột dài (Insight, Quan sát, Căn cứ, Ý nghĩa, Content Idea, Nội dung).
+5. Đọc lại hàng 1–3 mỗi tab bằng `get_values` để kiểm tra.
+6. Nhắc người dùng chia sẻ Sheet (quyền **Người chỉnh sửa**) cho cả team; cho link.
 
-Theo `references/interview-questions.md`. **Mỗi lần một câu**, có ví dụ trả lời. Nhận câu trả lời tự nhiên (dán link fanpage, viết tắt…) và tự chuẩn hoá. Hỏi lần lượt 4 dòng sản phẩm: SaaS, hosting, server, email. Người dùng nói "chưa biết"/"bỏ qua" → để `<điền>` và đi tiếp.
+Nội dung Chiến lược content trong template là chiến lược team đã duyệt ngày 08/10/2026 (cột Trạng thái `đã duyệt`). Nói rõ điều này với người dùng và mời người duyệt xem lại.
 
-Trước khi ghi, tóm tắt lại thành danh sách ngắn và hỏi "Đúng chưa?".
+## Bước 4 — Cập nhật nguồn theo dõi (tuỳ chọn)
 
-## Bước 4 — Content Strategy nháp
+Hỏi: "Danh sách đối thủ và từ khoá hiện có: <tóm tắt 1 dòng mỗi sản phẩm>. Bạn có muốn thêm/bớt gì, hoặc thêm sản phẩm khác (ví dụ hosting, email doanh nghiệp…) không?"
+- Có → làm theo `references/add-product-guide.md`.
+- Không → sang Bước 5.
 
-Team chưa có Content Strategy. Nói: "Lịch nội dung tuần cần dựa trên chiến lược nội dung. Team chưa có, nên mình sẽ hỏi vài câu để soạn **bản nháp**. Trưởng nhóm MKT sẽ duyệt trước khi dùng."
+## Bước 5 — Chạy thử
 
-Theo `references/strategy-drafting-guide.md`. Chỉ soạn pillar từ câu trả lời của người dùng, không tự thêm định hướng họ không nói. Ghi `Trạng thái: draft`.
+"Giờ mình chạy thử research một lượt nhỏ để chắc mọi thứ hoạt động." Chạy skill `mkt-research` chế độ thường cho sản phẩm của hôm nay, giới hạn khoảng 5 insight. Có Chrome → hỏi có muốn thử luôn chế độ Chrome với 1 đối thủ không (cần đã đăng nhập Facebook/TikTok bằng tài khoản thật).
 
-## Bước 5 — Ghi cấu hình lên Drive
+## Bước 6 — Kết thúc
 
-- Lần đầu: tạo 3 Doc `config`, `strategy`, `settings` trong `config/` từ template đã điền (settings: điền ID thư mục gốc).
-- Đã có và người dùng xác nhận sửa: tạo Doc mới cùng tên, chuyển bản cũ vào `config/_cu/` bằng `update_file` (đổi `parentId`) và thêm hậu tố ngày vào tên bản cũ. Không xoá.
-
-## Bước 6 — Chạy thử
-
-Nói "Giờ mình chạy thử research một lần nhỏ để chắc mọi thứ hoạt động." Chạy skill `mkt-research` ở chế độ `public-auto` với số insight = 3. Đọc lại file vừa tạo, kiểm tra đủ cột. Báo link.
-
-Nếu có Chrome: hỏi "Bạn có muốn thử luôn phần đọc Fanpage/TikTok bằng Chrome không? Bạn cần đang đăng nhập Facebook/TikTok bằng tài khoản của mình trên Chrome." Đồng ý → chạy thử chế độ `chrome` với 1 đối thủ.
-
-## Bước 7 — Lên lịch chạy tự động
-
-Theo `SETUP.md` mục "Lịch chạy tự động" (ở gốc repo/plugin: `../../SETUP.md`). Hướng dẫn từng thao tác.
-
-## Bước 8 — Kết thúc
+Khi được gọi từ `SETUP.md`: **không** hướng dẫn lịch tự động và **không** in tóm tắt — `SETUP.md` Bước 6–7 làm việc đó. Khi được gọi riêng: in
 
 ```
-✅ Cài đặt xong!
-- Kho dữ liệu: <link thư mục>
-- Strategy: bản nháp — nhờ <người duyệt> duyệt tại <link> (đổi "draft" thành "approved")
-- Lịch tự động: <đã tạo / chưa tạo — cách chạy tay>
-
-Từ giờ bạn chỉ cần nói:
-• "Research hôm nay"
-• "Research bằng Chrome" (đọc Fanpage/TikTok đối thủ)
-• "Lập lịch tuần sau"
+✅ Xong!
+- Bảng dữ liệu: <link>
+- Chiến lược content: <n> trụ cột đã duyệt, <m> trụ cột nháp chờ duyệt
+Từ giờ bạn chỉ cần nói: "Research hôm nay" · "Research bằng Chrome" · "Lập lịch tuần sau"
 ```

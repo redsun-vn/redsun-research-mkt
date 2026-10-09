@@ -1,52 +1,46 @@
 # Quy tắc soạn lịch tuần
 
-## Chọn insight cho pillar
+Thông số lấy từ tab **Chiến lược content** (dòng `thông tin`). Bảng mẫu team chốt ngày 09/10/2026; nếu bảng đổi, theo bảng.
 
-1. Lọc insight cùng `product_line` với pillar (pillar `general` dùng insight của mọi dòng).
-2. Ưu tiên theo thứ tự:
-   - insight có tag khớp mục tiêu pillar (pillar về giá/chi phí → `offer`, `pain_point`; pillar về nhận diện → `topic`, `content_pattern`);
-   - insight được xác nhận ở ≥2 nguồn (evidence ghi "cũng thấy ở…");
-   - insight mới hơn.
-3. Không dùng một insight cho quá 2 bài trong cùng tuần.
-4. `angle` phải trả lời được câu hỏi "insight nào cho thấy khách quan tâm điều này?" — nếu không trả lời được thì bỏ bài đó.
+## Nhịp đăng (dòng KÊNH)
 
-## Phân bổ
+- Đăng 5 ngày/tuần, thứ Hai đến thứ Sáu.
+- Facebook: 1 bài hoặc video mỗi ngày **mỗi Fanpage**. TikTok: 1 video mỗi ngày.
+- Chỉ xếp lịch cho kênh mà sản phẩm **đã có** (dòng `của mình` trong Nguồn theo dõi có link). Zalo OA chưa đưa vào lịch.
+- Ví dụ với bảng mẫu: SIPOS có Fanpage + TikTok → 10 bài/tuần; WEBINO chưa có Fanpage/TikTok → 0 bài, ghi "Cần chuẩn bị kênh".
 
-- Tần suất trong strategy (ví dụ "facebook 3 bài/tuần") quyết định số bài mỗi kênh.
-- Tỷ trọng (%) của pillar quyết định chia số bài giữa các pillar cùng kênh; làm tròn, ưu tiên pillar có nhiều insight hơn khi phải cắt.
-- Pillar không có insight phù hợp → không tạo bài, ghi vào "Cần research thêm".
-- Không xếp hai bài cùng dòng sản phẩm vào cùng ngày trên cùng kênh nếu tránh được.
+## Tỷ lệ (dòng TỶ LỆ)
 
-## Định dạng gợi ý theo kênh
+- 60% trụ cột **giai đoạn hiện tại** (`giai_doan` chứa "hiện tại").
+- 25% trụ cột **giai đoạn trước**.
+- 15% **theo ngành / nhóm khách** (mã SV-*, WG*…). Ưu tiên ngành mũi nhọn (dòng NN).
+- Làm tròn theo số bài; thiếu quan sát cho nhóm nào thì chuyển phần thiếu sang nhóm còn quan sát và ghi lại trong Digest.
 
-| Kênh | Định dạng thường dùng |
+## Vai trò kênh (dòng K-*) và thông điệp (TM-*)
+
+- Facebook (SIPOS): kênh chủ lực, đánh ngành sâu, thông điệp riêng từng ngành → định dạng bài viết/carousel/video.
+- TikTok (SIPOS): tạo nhu cầu, video 20–40 giây, tình huống thực tế, nói vấn đề không nói tính năng → `goc_tieu_de` dạng tình huống.
+- Góc/tiêu đề không trái thông điệp chủ đạo của sản phẩm.
+
+## Chọn Content Idea
+
+1. Lọc quan sát cùng sản phẩm, `trang_thai` khác `mốc`/`bỏ`, có Content Idea.
+2. Khớp với trụ cột: Content Idea hoặc Ý nghĩa liên quan trực tiếp tới `tru_cot`/`goc`/`chu_de_de_xuat` của trụ cột. Không khớp rõ ràng → không ép.
+3. Ưu tiên: `so_lan_thay` cao → độ tin cậy `cao`/`vừa` → `ngay_gan_nhat` mới.
+4. Một quan sát dùng tối đa 2 bài/tuần (khác kênh hoặc khác góc).
+5. Content Idea có điều kiện ("cần xác minh", "chưa nên làm…") → bỏ qua, ghi vào Digest "chờ xác minh".
+
+## Định dạng gợi ý
+
+| Kênh | Định dạng |
 |---|---|
-| facebook | bài viết, carousel, video ngắn |
-| tiktok | video ngắn |
-| website-blog | bài blog |
-| email | email |
+| Facebook | bài viết, carousel, video ngắn |
+| TikTok | video ngắn 20–40 giây |
 
-Dùng đúng tên kênh như trong config.
-
-## Mẫu file review (Doc `CAL_YYYY-Www_review`)
+## Ví dụ một dòng hợp lệ
 
 ```
-LỊCH NỘI DUNG TUẦN <YYYY-Www> — GIẢI THÍCH
-
-Nguồn dữ liệu: <số> insight từ <ngày> đến <ngày>; strategy duyệt ngày <ngày>.
-Cách kiểm tra: <máy kiểm tra (validate_trace) — 0 lỗi | kiểm tra thủ công>
-
-1. ĐỘ PHỦ PILLAR
-- P-HOSTING-01 Chi phí minh bạch: 2 bài (CAL-…-01, CAL-…-04) — dựa trên INS-…, INS-…
-- P-EMAIL-01 …: 0 bài — thiếu insight
-
-2. INSIGHT ĐƯỢC DÙNG
-- INS-… (Bnix, giá gia hạn): CAL-…-01
-
-3. CẦN RESEARCH THÊM
-- Pillar <…>: chưa có insight về <…>. Gợi ý: research <đối thủ/kênh/keyword>.
-
-4. ĐÃ LOẠI (không truy vết được)
-- CAL-…-07: insight INS-… không tồn tại trong kho
-(hoặc "Không có")
+CAL-2026-W42-01 | 2026-W42 | 2026-10-12 | Facebook | SIPOS | S3.1 | OB004 |
+"Phần mềm + thiết bị: tổng chi phí năm đầu thật sự là bao nhiêu?" | carousel | Nhắn tin nhận bảng giá | | đề xuất, chờ duyệt
 ```
+OB004 có Content Idea "So sánh tổng chi phí một năm khi dùng phần mềm kèm thiết bị"; S3.1 "Quyết định ngay — Chậm là mất cơ hội" (giai đoạn hiện tại, đã duyệt).

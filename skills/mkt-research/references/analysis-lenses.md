@@ -1,38 +1,48 @@
-# Cách đào sâu: từ dữ liệu thô đến 4 cột
+# Cách đào sâu: từ dữ liệu thô đến Content Idea
 
-Mục tiêu không phải "tìm trend" mà là bổ sung **dữ liệu đầu vào có bằng chứng** cho kho content. Mỗi dòng phải trả lời được: thấy gì, ở đâu, nghĩa là gì, gợi ý gì.
+Mục tiêu không phải "tìm trend" mà là liên tục bổ sung **dữ liệu đầu vào có căn cứ** cho kho content. Mọi Content Idea phải truy ngược được về quan sát có nguồn.
 
-## 6 lăng kính (tương ứng 6 tag)
+## 7 loại thông tin (cột `Loại thông tin` của Insight hằng ngày)
 
-| Tag | Câu hỏi để soi | Dấu hiệu cần tìm |
+| Mã | Câu hỏi để soi | Dấu hiệu |
 |---|---|---|
-| `topic` | Chủ đề nào đang được nhắc nhiều? | Cùng chủ đề xuất hiện ở ≥2 đối thủ hoặc ≥2 nguồn |
-| `keyword` | Từ/cụm từ nào lặp lại? | Cụm lặp trong headline, hashtag, quảng cáo (ví dụ "giá gia hạn", "NVMe", "AI") |
-| `offer` | Đối thủ đang chào gì? | Giảm %, tặng kèm, combo, dùng thử, cam kết giá |
-| `cta` | Họ kêu gọi hành động thế nào? | Nút, câu chốt, kênh dẫn (Messenger, form, hotline, link rút gọn) |
-| `pain_point` | Khách hàng sợ/khó chịu điều gì? | Câu hỏi lặp trong bình luận/diễn đàn, quảng cáo "Bạn đã chán…?", "Stop overpaying…" |
-| `content_pattern` | Định dạng nào nổi bật? | Hook mở đầu, độ dài, series, video màn hình, carousel so sánh, nhiều phiên bản quảng cáo cùng chạy |
+| `chu_de` | Chủ đề nào đang được nhắc nhiều? | Cùng chủ đề ở ≥ 2 đối thủ/nguồn; chủ đề gắn mùa vụ, quy định mới |
+| `tu_khoa` | Từ/cụm từ nào lặp lại? | Cụm lặp trong headline, hashtag, quảng cáo, kết quả tìm kiếm |
+| `execution` | Đối thủ triển khai thế nào? | Kênh dồn lực, nhịp đăng, chạy quảng cáo theo ngành, hợp tác đối tác, tài nguyên miễn phí để thu lead |
+| `offer` | Họ chào gì? | Giá, giảm %, tặng thiết bị/tháng dùng, dùng thử, cam kết giá |
+| `cta` | Kêu gọi hành động ra sao? | Nút, câu chốt, kênh dẫn (inbox, form demo, tải tài liệu, hotline) |
+| `pain` | Khách hàng khó khăn gì? | Câu hỏi lặp trong group/bình luận, quảng cáo nhắm nỗi đau ("thất thoát", "lệch kho") |
+| `pattern` | Mẫu nội dung nào đáng chú ý? | Hook, format (video ngắn, carousel), series, khung quảng cáo lặp lại |
 
-Một quan sát có thể mang nhiều tag (`offer|cta`).
+## Insight (Bước 1) — một câu ngắn, có số khi có
 
-## Viết 4 cột
+- Tốt: "Tặng máy quét mã vạch và máy in hóa đơn (2.000.000đ) khi đăng ký 2 năm gói Chuyên Nghiệp"
+- Chưa tốt: "KiotViet khuyến mãi mạnh"
 
-**Quan sát (observation)** — mô tả trung lập, cụ thể, có chủ thể và thời gian.
-- Tốt: "Bnix chạy quảng cáo VPS dịp 2/9 với giá từ 899K/năm, nhấn mạnh giữ giá khi gia hạn."
-- Chưa tốt: "Đối thủ đang khuyến mãi mạnh."
+## Quan sát (Bước 2) — gom nhiều insight thành một nhận định
 
-**Căn cứ/dữ liệu (evidence)** — trích nguyên văn ngắn hoặc số liệu, đủ để người khác kiểm lại tại `source_url`.
-- Tốt: `Trích: "Giá gia hạn vẫn giữ ưu đãi" — Library ID 2474886383022430, chạy từ 26/08/2026`
-- Không được: tóm tắt chung chung, số liệu tự ước tính.
+**Quan sát** — hiện tượng, trung lập, có chủ thể.
+> KiotViet và Sapo chạy quảng cáo riêng theo từng ngành ngách với cùng khung dùng thử miễn phí
 
-**Ý nghĩa (meaning)** — vì sao điều này quan trọng với khách hàng của dòng sản phẩm đó, hoặc với vị thế của Redsun. Nối với pain point/động cơ mua khi có thể.
-- Tốt: "Ít nhất 2 nhà cung cấp cùng nhắm vào nỗi sợ tăng giá khi gia hạn → đây là rào cản mua thật trên thị trường VN."
+**Căn cứ / dữ liệu** — số liệu và nguồn ngắn, đủ để kiểm lại.
+> Sapo: 27 quảng cáo đang chạy (hoa tươi, đồng phục, phụ liệu may mặc…); KiotViet: khách sạn, vật liệu xây dựng, siêu thị mini
 
-**Content Idea (content_idea)** — một hướng ý tưởng 1–2 câu Redsun có thể làm, dựa trên ý nghĩa ở trên. Không viết caption hoàn chỉnh.
-- Tốt: "Bài/carousel 'Tổng chi phí 3 năm' minh bạch giá gia hạn các gói hosting Redsun."
+**Ý nghĩa** — nối với khách hàng hoặc vị thế của sản phẩm Redsun.
+> SIPOS đã có sẵn 6 ngành nên có thể nói đúng nỗi đau từng ngành
 
-## Mức sâu tối thiểu
+**Content Idea** — một gợi ý ngắn, Redsun làm được.
+> Chuỗi nội dung SIPOS cho từng ngành, mỗi bài một nỗi đau riêng
 
-- Ưu tiên quan sát **lặp lại** (≥2 đối thủ/nguồn) hơn quan sát đơn lẻ; khi lặp, nêu rõ trong evidence ("cũng thấy ở…").
-- Mỗi lần chạy cố gắng có ít nhất 1 `pain_point` và 1 `offer`/`cta` cho mỗi dòng sản phẩm được phân bổ, nếu nguồn có.
-- Không có gì mới đáng ghi thì ghi ít dòng hơn. Ít mà thật tốt hơn nhiều mà bịa.
+Khi chưa nên làm ngay: ghi rõ điều kiện, ví dụ "Chưa nên làm content phản hồi trước khi xác minh điều kiện ưu đãi của POS365".
+
+## Độ tin cậy
+
+- `cao`: số liệu công khai kiểm chứng được (bảng giá chính thức, văn bản pháp luật).
+- `vừa`: quan sát trực tiếp nhưng một nguồn, hoặc cần đối chiếu thêm.
+- `thấp (lý do)`: lời tự nhận của nhà bán, bài trong group, quy định chưa đối chiếu văn bản chính thức.
+
+## Mức sâu tối thiểu mỗi lần chạy
+
+- Mỗi đối thủ được đọc: ít nhất 1 ý về `offer` hoặc `cta` và 1 ý về `execution` hoặc `pattern`, nếu nguồn có.
+- Ưu tiên quan sát lặp ở nhiều đối thủ hơn quan sát đơn lẻ.
+- Ít mà thật tốt hơn nhiều mà bịa.

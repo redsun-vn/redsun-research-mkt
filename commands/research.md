@@ -1,4 +1,4 @@
 ---
-description: Research insight hôm nay (website, Google Trends, tìm kiếm) và ghi vào kho insight trên Drive
+description: Research hôm nay (blog, bảng giá, tìm kiếm, xu hướng) và ghi vào Research database
 ---
-Dùng skill `mkt-research` của plugin redsun-mkt, chế độ `public-auto`. $ARGUMENTS
+Dùng skill `mkt-research` của plugin redsun-mkt, chế độ thường. $ARGUMENTS

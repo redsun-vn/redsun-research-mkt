@@ -1,6 +1,6 @@
 # Công cụ Research Marketing — redsun.vn
 
-Claude tự động research đối thủ và khách hàng mỗi ngày (website, Google Trends, Fanpage, TikTok, quảng cáo), lưu thành kho insight trên Google Drive của team, và lập **lịch nội dung tuần** mà mỗi ý tưởng đều truy ngược được về insight thật và chiến lược nội dung.
+Claude research đối thủ và khách hàng mỗi ngày (Fanpage, TikTok, YouTube, blog/bảng giá, quảng cáo Meta, tìm kiếm) cho SIPOS, WEBINO, REDSUN BOS, ghi vào **một Google Sheet chung của team** (Research database: Quan sát → Căn cứ → Ý nghĩa → Content Idea), và lập **Content Calendar tuần** ngay khi bạn hỏi — mỗi bài đều truy ngược được về quan sát thật và trụ cột chiến lược đã duyệt.
 
 Bạn **không cần biết kỹ thuật**. Claude làm hết, bạn chỉ trả lời câu hỏi và bấm vài chỗ khi Claude nhờ.
 
@@ -17,7 +17,7 @@ Bạn **không cần biết kỹ thuật**. Claude làm hết, bạn chỉ trả
 
 Claude sẽ hướng dẫn từng bước. Khi Claude nhờ bấm gì đó, làm xong thì nhắn **"xong"**.
 
-Bạn cần có: tài khoản Claude của công ty (gói Team), tài khoản Google công ty. Nếu muốn research Fanpage/TikTok: Google Chrome đã đăng nhập Facebook và TikTok bằng tài khoản của chính bạn.
+Bạn cần có: tài khoản Claude do công ty cấp, tài khoản Google công ty (Claude sẽ nhờ bạn kết nối Google Drive và Google Sheets). Nếu muốn research Fanpage/TikTok: Google Chrome đã đăng nhập Facebook và TikTok bằng tài khoản của chính bạn.
 
 ## Dùng hằng ngày
 
@@ -25,24 +25,26 @@ Mở Claude và nói một trong các câu sau:
 
 | Bạn nói | Claude làm |
 |---|---|
-| **Research hôm nay** | Đọc website đối thủ, Google Trends, tìm kiếm → thêm insight vào kho |
+| **Research hôm nay** | Đọc blog/bảng giá đối thủ, tìm kiếm, xu hướng → thêm insight, quan sát và Content Idea vào bảng |
 | **Research bằng Chrome** | Đọc Fanpage, TikTok, quảng cáo của đối thủ (cần Chrome đang mở) |
-| **Lập lịch tuần sau** | Lập lịch nội dung từ insight + chiến lược đã duyệt |
-| **Kho insight tuần này có gì về hosting?** | Tóm tắt insight kèm link nguồn |
-| **Thêm đối thủ X cho dòng email** | Cập nhật cấu hình |
+| **Lập lịch tuần sau** | Lập Content Calendar từ Content Idea + trụ cột đã duyệt (chạy ngay, bất cứ lúc nào) |
+| **Kho insight tuần này có gì về SIPOS?** | Tóm tắt kèm mã quan sát và link nguồn |
+| **Thêm đối thủ X cho WEBINO** / **Thêm sản phẩm hosting** | Cập nhật tab Nguồn theo dõi (sản phẩm mới có chiến lược nháp chờ duyệt) |
 
-Nếu đã tạo lịch tự động lúc cài đặt, research và lịch tuần sẽ tự chạy. Kết quả nằm trong thư mục **RedSun-MKT-Research** trên Google Drive.
+Nếu đã tạo lịch tự động lúc cài đặt, research sẽ tự chạy mỗi sáng thứ Hai–thứ Sáu (mỗi ngày một sản phẩm theo vòng). Mọi kết quả nằm trong Google Sheet **Redsun MKT — Research database**.
 
-## Duyệt chiến lược nội dung (dành cho trưởng nhóm MKT)
+## Duyệt (dành cho trưởng nhóm MKT)
 
-Lúc cài đặt, Claude soạn **bản nháp** chiến lược nội dung từ câu trả lời của team. Lịch tuần chỉ được lập sau khi bản nháp được duyệt:
-1. Mở Google Drive → `RedSun-MKT-Research` → `config` → `strategy`.
-2. Đọc, sửa trực tiếp nếu cần.
-3. Đổi dòng `Trạng thái: draft` thành `Trạng thái: approved`, điền ngày duyệt.
+Mở Google Sheet **Redsun MKT — Research database**:
+- Tab **Chiến lược content**: cột Trạng thái. Chỉ trụ cột `đã duyệt` mới được dùng cho lịch tuần. Trụ cột mới Claude soạn luôn là `nháp` — bạn đọc, sửa nếu cần, rồi đổi thành `đã duyệt`.
+- Tab **Research database**: Content Idea ở trạng thái `gợi ý, chờ người duyệt`; bạn có thể đổi thành `đã duyệt` hoặc `bỏ` (ý tưởng `bỏ` sẽ không vào lịch).
+- Tab **Content Calendar**: mọi dòng là `đề xuất, chờ duyệt`; điền Người phụ trách và đổi trạng thái khi chốt.
+
+Quy tắc: không chèn dòng, không sắp xếp lại các bảng Claude đang ghi.
 
 ## Lưu ý khi dùng Chrome
 
-Claude chỉ **đọc** trang bằng tài khoản bạn đang đăng nhập: không thích, không bình luận, không nhắn tin, mỗi trang chỉ xem khoảng 10 bài gần nhất. Nếu Facebook/TikTok hiện yêu cầu xác minh, Claude sẽ dừng ngay. Dùng tài khoản thật, không dùng tài khoản ảo.
+Claude chỉ **đọc** trang bằng tài khoản bạn đang đăng nhập: không thích, không bình luận, không nhắn tin, mỗi lượt tối đa 30 trang trong 20 phút (chỉnh ở tab Nguồn theo dõi). Nếu Facebook/TikTok hiện yêu cầu xác minh, Claude sẽ dừng ngay. Dùng tài khoản thật, không dùng tài khoản ảo.
 
 ---
 
