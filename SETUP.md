@@ -48,7 +48,13 @@ Mở đầu: "Chào bạn! Mình sẽ cài công cụ research cho team Marketin
 2. **Có thấy** → "Bấm **Connect** ở Google Drive, đăng nhập **tài khoản Google công ty**; làm tương tự với Google Sheets." Rồi: "Bạn mở lại cuộc trò chuyện (Claude Code: thoát và mở lại Claude) và nhắn 'xong'." Đã kết nối mà vẫn chưa thấy công cụ: "Bấm biểu tượng kết nối ở ô chat và bật Google Drive / Google Sheets."
 3. **Không thấy** → công ty dùng Claude Team và **Owner chưa bật**. Nói: "Phần này cần người quản trị Claude của công ty bật một lần. Bạn gửi giúp tin nhắn này cho người quản trị:"
    ```
-   Nhờ anh/chị bật kết nối Google cho Claude của team: vào claude.ai → Organization settings → Connectors → Browse connectors → chọn Google Drive → Add to your team; làm tương tự với Google Sheets. Nếu Google Workspace công ty chặn ứng dụng ngoài, cần tin cậy ứng dụng Claude tại admin.google.com → Security → Access and data control → API controls. Cảm ơn!
+   Nhờ anh/chị bật giúp các mục sau cho Claude của team (claude.ai → Organization settings):
+   1. Connectors → Browse connectors → Google Drive → Add to your team
+   2. Connectors → Browse connectors → Google Sheets → Add to your team (cho phép quyền sửa)
+   3. Bật Web search
+   4. Không chặn Claude in Chrome, Cowork và Scheduled tasks
+   Nếu Google Workspace công ty chặn ứng dụng ngoài: admin.google.com → Security → Access and data control → API controls → tin cậy ứng dụng Claude.
+   Cảm ơn!
    ```
    Trong lúc chờ: dùng **cách 2** (mục dưới) để team vẫn làm việc được.
 4. Kết nối báo lỗi quyền (Owner chỉ cho đọc): "Người quản trị đang chỉ cho phép đọc. Nhờ họ cho phép sửa với Google Sheets." Trong lúc chờ: cách 2.

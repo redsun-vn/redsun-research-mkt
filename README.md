@@ -19,6 +19,27 @@ Claude sẽ hướng dẫn từng bước. Khi Claude nhờ bấm gì đó, làm
 
 Bạn cần có: tài khoản Claude do công ty cấp, tài khoản Google công ty (Claude sẽ nhờ bạn kết nối Google Drive và Google Sheets). Nếu muốn research Fanpage/TikTok: Google Chrome đã đăng nhập Facebook và TikTok bằng tài khoản của chính bạn.
 
+## Cần bật những gì
+
+**Người quản trị Claude Team (Owner) bật một lần cho cả công ty** — claude.ai → Organization settings:
+
+| # | Bật gì | Ở đâu | Để làm gì | Bắt buộc? |
+|---|---|---|---|---|
+| 1 | **Google Drive** connector | Connectors → Browse connectors → Add to your team | Tìm, tạo bảng dữ liệu; xuất bảng để kiểm tra | Bắt buộc (cách 1) |
+| 2 | **Google Sheets** connector, **cho phép sửa** (không để "Blocked" quyền ghi) | Connectors → Browse connectors → Add to your team | Đọc/ghi từng tab của bảng | Bắt buộc (cách 1) |
+| 3 | **Web search** (tìm kiếm web) | Settings / Capabilities | Đọc blog, bảng giá, tìm kiếm, Google Trends | Bắt buộc |
+| 4 | **Claude in Chrome** | Không chặn tiện ích Claude in Chrome cho thành viên | Đọc Fanpage, TikTok, quảng cáo Meta; ghi bảng khi chưa có 1–2 | Rất nên |
+| 5 | **Cowork** và **Scheduled tasks** (tác vụ định kỳ) | Không tắt các tính năng này | Chạy research mỗi sáng, lập lịch tuần tự động | Nên (không có thì chạy tay) |
+
+Nếu Google Workspace của công ty chặn ứng dụng ngoài: **quản trị Google** vào admin.google.com → Security → Access and data control → API controls → Manage third-party app access → tin cậy ứng dụng **Claude**.
+
+**Mỗi thành viên MKT tự làm** (Claude sẽ hướng dẫn khi cài đặt):
+- Kết nối **Google Drive** và **Google Sheets** bằng tài khoản Google công ty (Settings → Connectors → Connect).
+- Cài tiện ích **Claude in Chrome**, đăng nhập Claude; trên Chrome đăng nhập Google, Facebook, TikTok bằng tài khoản thật của mình.
+- Được chia sẻ quyền **Người chỉnh sửa** trên bảng **Redsun MKT — Research database**.
+
+Không cần: Gmail, Google Calendar, Google Docs, Google Slides.
+
 ## Dùng hằng ngày
 
 Mở Claude và nói một trong các câu sau:

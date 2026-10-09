@@ -8,6 +8,7 @@ Cách cập nhật: mở Claude trong thư mục `redsun-research-mkt` và nói 
 
 - Dùng được khi công ty **chưa bật kết nối Google** cho Claude Team: Claude đọc/ghi bảng qua Chrome đã đăng nhập Google của bạn.
 - Hướng dẫn cài đặt có sẵn tin nhắn mẫu để nhờ người quản trị bật kết nối Google Drive và Google Sheets.
+- README có mục **Cần bật những gì**: danh sách kết nối và tính năng người quản trị cần bật, và việc mỗi thành viên tự làm.
 
 **Team cần làm:** Không có. Nếu bạn đang dùng qua Chrome, khi Claude chạy hãy để Chrome mở.
 
