@@ -1,6 +1,6 @@
 ---
 name: mkt-content-calendar
-description: Tạo Content Calendar tuần cho Redsun ngay khi team MKT hỏi (hoặc theo lịch thứ Hai) — lấy Content Idea từ các quan sát trong Research database và trụ cột đã duyệt trong Chiến lược content, ghi vào tab Content Calendar; mọi dòng lịch truy ngược được về mã quan sát (OB) và mã trụ cột. Dùng khi người dùng nói "lập lịch tuần", "content calendar", "lên lịch nội dung tuần sau/tuần này", "lịch cho SIPOS/WEBINO", "duyệt strategy", "strategy đã ổn chưa".
+description: Tạo Content Calendar tuần cho Redsun ngay khi team MKT hỏi (hoặc theo lịch thứ Hai) — lấy Content Idea từ các quan sát trong Research database và trụ cột đã duyệt trong Chiến lược content, ghi vào tab Content Calendar; mọi dòng lịch truy ngược được về mã quan sát (OB) và mã trụ cột. Cũng viết idea/brief theo format chuẩn để copy cho agent tạo video, tạo nội dung. Dùng khi người dùng nói "lập lịch tuần", "content calendar", "lên lịch nội dung tuần sau/tuần này", "lịch cho SIPOS/WEBINO", "hôm nay làm nội dung gì", "viết idea", "viết brief", "viết kịch bản video", "duyệt strategy", "strategy đã ổn chưa".
 ---
 
 # mkt-content-calendar — lịch tuần từ Content Idea có căn cứ
@@ -9,6 +9,7 @@ description: Tạo Content Calendar tuần cho Redsun ngay khi team MKT hỏi (h
 - `../../shared/working-rules.md` — **bắt buộc**.
 - `../../shared/data-contract.md` — tab Content Calendar, Chiến lược content, Research database.
 - `references/calendar-rules.md` — nhịp đăng, tỷ lệ, cách chọn Content Idea, mẫu Digest.
+- `references/content-brief-format.md` — **khuôn bắt buộc** khi viết idea/brief (mục 7).
 
 **Nguyên tắc số 1:** không tự nghĩ topic. Mỗi dòng lịch = một **Content Idea có sẵn** trong Research database (qua mã OB) được đặt vào **một trụ cột đã duyệt**. Trụ cột thiếu quan sát → ghi vào "Cần research thêm", không bịa.
 
@@ -68,3 +69,13 @@ Không chạy được lệnh: với **từng dòng**, đối chiếu mã trụ 
 - Ý tưởng bị loại vì không truy vết được: <số>
 Xem lịch: <link Research database> (tab Content Calendar). Tất cả đang ở trạng thái "đề xuất, chờ duyệt".
 ```
+
+## 7. Viết idea / brief cho agent (khi người dùng xin)
+
+Người dùng nói "viết idea", "viết brief", "viết kịch bản", "hôm nay làm nội dung gì", "làm video cho bài CAL-…":
+1. Xác định các dòng lịch cần viết: theo mã lịch người dùng nêu; "hôm nay" → các dòng có `ngay_dang` là hôm nay; chưa có lịch cho ngày đó → lập lịch trước (mục 1–5) rồi viết.
+2. Đọc quan sát (OB) và trụ cột của từng dòng để lấy căn cứ, thông điệp chủ đạo (TM-*), vai trò kênh (K-*), giá/chính sách công khai ở Nguồn theo dõi.
+3. Viết **đúng khuôn** trong `references/content-brief-format.md`: Khuôn 1 cho video, Khuôn 2 cho bài đăng/carousel. Mỗi idea một khối chữ thường copy được ngay; không JSON, không bảng.
+4. Chạy checklist cuối file khuôn trước khi gửi.
+5. Chỉ trả lời trong chat; không ghi brief vào Sheet (lịch đã có mã để truy ngược). Sản phẩm/ngày không có idea đủ điều kiện → thêm một dòng ngắn sau các khối: "<SẢN PHẨM>: chưa có idea dùng được hôm nay vì <lý do>. Việc nên làm: <…>".
+

@@ -10,6 +10,7 @@
 | "Research bằng Chrome", "xem Fanpage/TikTok/quảng cáo đối thủ" | `mkt-research`, chế độ chrome |
 | "Research đầy đủ", "research SIPOS" | `mkt-research` (cả hai chế độ / đúng sản phẩm) |
 | "Lập lịch tuần sau", "content calendar tuần này", "lịch cho SIPOS" | `mkt-content-calendar` — chạy ngay, không cần chờ thứ Hai |
+| "Hôm nay làm nội dung gì", "viết idea/brief", "viết kịch bản video cho bài …" | `mkt-content-calendar` mục 7: trả về các khối idea theo khuôn chuẩn, copy được cho agent tạo video/nội dung |
 | "Kho insight có gì về …", "tuần này có gì mới" | `mkt-research` mục Hỏi đáp: trả lời kèm mã OB/link nguồn, không ghi gì |
 | "Hôm qua research có chạy không?" | Đọc Digest: `Tóm tắt lượt chạy`, `Nguồn lỗi/bị chặn` gần nhất |
 | "Strategy đã ổn chưa?", "duyệt strategy" | `mkt-content-calendar`: tóm tắt trụ cột + trạng thái; chỉ người duyệt tự đổi `nháp` → `đã duyệt` |

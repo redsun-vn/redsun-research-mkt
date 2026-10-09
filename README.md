@@ -28,6 +28,7 @@ Mở Claude và nói một trong các câu sau:
 | **Research hôm nay** | Đọc blog/bảng giá đối thủ, tìm kiếm, xu hướng → thêm insight, quan sát và Content Idea vào bảng |
 | **Research bằng Chrome** | Đọc Fanpage, TikTok, quảng cáo của đối thủ (cần Chrome đang mở) |
 | **Lập lịch tuần sau** | Lập Content Calendar từ Content Idea + trụ cột đã duyệt (chạy ngay, bất cứ lúc nào) |
+| **Hôm nay làm nội dung gì?** / **Viết idea cho bài CAL-2026-W42-01** | Trả về từng idea theo khuôn chuẩn: copy nguyên khối dán cho agent tạo video, tạo nội dung, hoặc gửi người làm |
 | **Kho insight tuần này có gì về SIPOS?** | Tóm tắt kèm mã quan sát và link nguồn |
 | **Thêm đối thủ X cho WEBINO** / **Thêm sản phẩm hosting** | Cập nhật tab Nguồn theo dõi (sản phẩm mới có chiến lược nháp chờ duyệt) |
 
