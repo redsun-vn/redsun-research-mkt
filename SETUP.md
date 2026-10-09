@@ -48,13 +48,18 @@ Mở đầu: "Chào bạn! Mình sẽ cài công cụ research cho team Marketin
 2. **Có thấy** → "Bấm **Connect** ở Google Drive, đăng nhập **tài khoản Google công ty**; làm tương tự với Google Sheets." Rồi: "Bạn mở lại cuộc trò chuyện (Claude Code: thoát và mở lại Claude) và nhắn 'xong'." Đã kết nối mà vẫn chưa thấy công cụ: "Bấm biểu tượng kết nối ở ô chat và bật Google Drive / Google Sheets."
 3. **Không thấy** → công ty dùng Claude Team và **Owner chưa bật**. Nói: "Phần này cần người quản trị Claude của công ty bật một lần. Bạn gửi giúp tin nhắn này cho người quản trị:"
    ```
-   Nhờ anh/chị bật giúp các mục sau cho Claude của team (claude.ai → Organization settings):
-   1. Connectors → Browse connectors → Google Drive → Add to your team
-   2. Connectors → Browse connectors → Google Sheets → Add to your team (cho phép quyền sửa)
-   3. Bật Web search
-   4. Không chặn Claude in Chrome, Cowork và Scheduled tasks
-   Nếu Google Workspace công ty chặn ứng dụng ngoài: admin.google.com → Security → Access and data control → API controls → tin cậy ứng dụng Claude.
-   Cảm ơn!
+   Nhờ anh/chị bật giúp cho Claude Team (claude.ai → Organization settings):
+   1. Capabilities → bật Web search
+   2. Capabilities → bật Cloud code execution and file creation
+   3. Plugins & skills → tab Policy → bật Skills
+   4. Plugins & skills → bật cho phép thành viên thêm plugin
+   5. Connectors → Browse connectors → Google Drive → Add to your team
+   6. Connectors → Browse connectors → Google Sheets → Add to your team, quyền ghi/sửa đặt Always allow
+   7. Claude in Chrome → bật Enable for your team
+   8. Cowork → bật Enable for your organization
+   9. Cowork → bật Run Cowork in the cloud
+   Nếu kết nối Google báo "ứng dụng bị chặn": admin.google.com → Security → Access and data control → API controls → Manage third-party app access → đặt Claude là Trusted.
+   Hướng dẫn chi tiết: docs/owner-setup-guide.md. Cảm ơn!
    ```
    Người quản trị cần hướng dẫn chi tiết → gửi họ file `docs/owner-setup-guide.md`.
    Trong lúc chờ: dùng **cách 2** (mục dưới) để team vẫn làm việc được.

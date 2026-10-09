@@ -21,17 +21,21 @@ Bạn cần có: tài khoản Claude do công ty cấp, tài khoản Google côn
 
 ## Cần bật những gì
 
-**Người quản trị Claude Team (Owner) bật một lần cho cả công ty** — claude.ai → Organization settings. Hướng dẫn từng bước và tin nhắn mẫu để gửi Owner: [`docs/owner-setup-guide.md`](docs/owner-setup-guide.md).
+**Người quản trị Claude Team (Owner) bật một lần cho cả công ty** — claude.ai → Organization settings. Hướng dẫn từng bước và tin nhắn mẫu: [`docs/owner-setup-guide.md`](docs/owner-setup-guide.md).
 
-| # | Bật gì | Ở đâu | Để làm gì | Bắt buộc? |
-|---|---|---|---|---|
-| 1 | **Google Drive** connector | Connectors → Browse connectors → Add to your team | Tìm, tạo bảng dữ liệu; xuất bảng để kiểm tra | Bắt buộc (cách 1) |
-| 2 | **Google Sheets** connector, **cho phép sửa** (không để "Blocked" quyền ghi) | Connectors → Browse connectors → Add to your team | Đọc/ghi từng tab của bảng | Bắt buộc (cách 1) |
-| 3 | **Web search** (tìm kiếm web) | Settings / Capabilities | Đọc blog, bảng giá, tìm kiếm, Google Trends | Bắt buộc |
-| 4 | **Claude in Chrome** | Không chặn tiện ích Claude in Chrome cho thành viên | Đọc Fanpage, TikTok, quảng cáo Meta; ghi bảng khi chưa có 1–2 | Rất nên |
-| 5 | **Cowork** và **Scheduled tasks** (tác vụ định kỳ) | Không tắt các tính năng này | Chạy research mỗi sáng, lập lịch tuần tự động | Nên (không có thì chạy tay) |
+| # | Vào mục | Bật gì |
+|---|---|---|
+| 1 | Capabilities | Bật **Web search** |
+| 2 | Capabilities | Bật **Cloud code execution and file creation** |
+| 3 | Plugins & skills → Policy | Bật **Skills** |
+| 4 | Plugins & skills | Bật cho phép thành viên **thêm plugin** |
+| 5 | Connectors → Browse connectors | Thêm **Google Drive** (Add to your team) |
+| 6 | Connectors → Browse connectors | Thêm **Google Sheets** (Add to your team), đặt quyền ghi/sửa là **Always allow** |
+| 7 | Claude in Chrome | Bật **Enable for your team** |
+| 8 | Cowork | Bật **Enable for your organization** |
+| 9 | Cowork | Bật **Run Cowork in the cloud** (để research chạy khi máy tắt) |
 
-Nếu Google Workspace của công ty chặn ứng dụng ngoài: **quản trị Google** vào admin.google.com → Security → Access and data control → API controls → Manage third-party app access → tin cậy ứng dụng **Claude**.
+Nếu kết nối Google báo "ứng dụng bị chặn": **quản trị Google** vào admin.google.com → Security → Access and data control → API controls → Manage third-party app access → đặt **Claude** là **Trusted**.
 
 **Mỗi thành viên MKT tự làm** (Claude sẽ hướng dẫn khi cài đặt):
 - Kết nối **Google Drive** và **Google Sheets** bằng tài khoản Google công ty (Settings → Connectors → Connect).
