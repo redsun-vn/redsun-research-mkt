@@ -12,19 +12,29 @@ Bật kết nối Google chỉ cho phép dùng. Mỗi người vẫn tự đăng
 
 Tất cả nằm trong **claude.ai → Organization settings**.
 
-| # | Vào mục | Bật gì | Chọn / đặt | Để làm gì |
-|---|---|---|---|---|
-| 1 | **Capabilities** | **Web search** | Bật (On) | Đọc blog, bảng giá, kết quả tìm kiếm của đối thủ |
-| 2 | **Capabilities** | **Cloud code execution and file creation** | Bật (On) | Chạy kỹ năng (skill) và máy kiểm tra dữ liệu |
-| 3 | **Plugins & skills** → tab **Policy** | **Skills** | Bật (On) | Dùng 3 kỹ năng research, lập lịch, cài đặt |
-| 4 | **Plugins & skills** | Cho phép thành viên **thêm plugin** | Bật (cho phép) | Cài plugin `redsun-mkt` từ GitHub hoặc file ZIP |
-| 5 | **Connectors** → **Browse connectors** → **Google Drive** | **Add to your team** | Bấm thêm | Tìm, tạo bảng dữ liệu, xuất bảng ra file để kiểm tra |
-| 6 | **Connectors** → **Browse connectors** → **Google Sheets** | **Add to your team** | Bấm thêm, rồi đặt các quyền **ghi/sửa** là **Always allow** (hoặc **Needs approval**) | Đọc và ghi từng tab của bảng |
-| 7 | **Claude in Chrome** | **Enable for your team** | Bật (On). Phần trang web: chọn **mọi trang trừ trang bị chặn**; nếu công ty chọn **chỉ trang được phép** thì bấm **Add websites** và thêm: `facebook.com`, `tiktok.com`, `docs.google.com`, `drive.google.com`, `trends.google.com` | Đọc Fanpage, TikTok, quảng cáo Meta; ghi bảng qua Chrome khi cần |
-| 8 | **Cowork** | **Enable for your organization** | Bật (On) | Dùng Claude Desktop (Cowork) và tác vụ định kỳ |
-| 9 | **Cowork** | **Run Cowork in the cloud** | Bật (On) | Research tự chạy mỗi sáng **kể cả khi máy tắt** |
+- **1. Capabilities → bật Web search**
+  - Để: Claude đọc blog, bảng giá, kết quả tìm kiếm của đối thủ.
+- **2. Capabilities → bật Cloud code execution and file creation**
+  - Để: chạy kỹ năng (skill) và máy kiểm tra dữ liệu.
+- **3. Plugins & skills → tab Policy → bật Skills**
+  - Để: dùng 3 kỹ năng cài đặt, research, lập lịch.
+- **4. Plugins & skills → bật cho phép thành viên thêm plugin**
+  - Để: cài plugin `redsun-mkt` từ GitHub hoặc file ZIP.
+- **5. Connectors → Browse connectors → Google Drive → bấm Add to your team**
+  - Để: tìm, tạo bảng dữ liệu, xuất bảng ra file để kiểm tra.
+- **6. Connectors → Browse connectors → Google Sheets → bấm Add to your team**
+  - Sau đó đặt các quyền ghi/sửa của Google Sheets là **Always allow** (hoặc **Needs approval**).
+  - Để: đọc và ghi từng tab của bảng.
+- **7. Claude in Chrome → bật Enable for your team**
+  - Phần trang web: chọn **mọi trang trừ trang bị chặn**.
+  - Nếu công ty chọn **chỉ trang được phép**: bấm **Add websites**, thêm `facebook.com`, `tiktok.com`, `docs.google.com`, `drive.google.com`, `trends.google.com`.
+  - Để: đọc Fanpage, TikTok, quảng cáo Meta; ghi bảng qua Chrome khi cần.
+- **8. Cowork → bật Enable for your organization**
+  - Để: dùng Claude Desktop (Cowork) và tác vụ định kỳ.
+- **9. Cowork → bật Run Cowork in the cloud**
+  - Để: research tự chạy mỗi sáng kể cả khi máy tắt.
 
-Gói **Enterprise** có thêm công tắc **Scheduled tasks**: bật (On). Gói **Team** không có công tắc riêng này.
+Gói **Enterprise** có thêm công tắc **Scheduled tasks**: bật. Gói **Team** không có công tắc riêng này.
 
 Không cần bật: Gmail, Google Calendar, Google Docs, Google Slides.
 
@@ -32,12 +42,12 @@ Không cần bật: Gmail, Google Calendar, Google Docs, Google Slides.
 
 ## Nếu Google Workspace công ty chặn ứng dụng ngoài
 
-Chỉ làm khi thành viên báo lỗi lúc kết nối Google (ví dụ "ứng dụng bị chặn", "admin chưa cho phép"). Cần **quản trị viên Google Workspace**:
+Chỉ làm khi thành viên báo lỗi lúc kết nối Google (ví dụ "ứng dụng bị chặn"). Cần **quản trị viên Google Workspace**:
 
-| # | Vào đâu | Làm gì |
-|---|---|---|
-| 10 | **admin.google.com** → **Security** → **Access and data control** → **API controls** → **Manage third-party app access** | Tìm ứng dụng **Claude** → đặt **Trusted** (tin cậy). Chờ khoảng 15 phút |
-| 11 | (Chỉ khi công ty quản lý Chrome tập trung) **admin.google.com** → **Devices** → **Chrome** → **Apps & extensions** | Cho phép (hoặc cài sẵn) tiện ích **Claude** trên Chrome Web Store |
+- **10. admin.google.com → Security → Access and data control → API controls → Manage third-party app access**
+  - Tìm ứng dụng **Claude** → đặt **Trusted** (tin cậy). Chờ khoảng 15 phút.
+- **11. (Chỉ khi công ty quản lý Chrome tập trung) admin.google.com → Devices → Chrome → Apps & extensions**
+  - Cho phép (hoặc cài sẵn) tiện ích **Claude** từ Chrome Web Store.
 
 ---
 

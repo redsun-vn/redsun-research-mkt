@@ -23,17 +23,15 @@ Bạn cần có: tài khoản Claude do công ty cấp, tài khoản Google côn
 
 **Người quản trị Claude Team (Owner) bật một lần cho cả công ty** — claude.ai → Organization settings. Hướng dẫn từng bước và tin nhắn mẫu: [`docs/owner-setup-guide.md`](docs/owner-setup-guide.md).
 
-| # | Vào mục | Bật gì |
-|---|---|---|
-| 1 | Capabilities | Bật **Web search** |
-| 2 | Capabilities | Bật **Cloud code execution and file creation** |
-| 3 | Plugins & skills → Policy | Bật **Skills** |
-| 4 | Plugins & skills | Bật cho phép thành viên **thêm plugin** |
-| 5 | Connectors → Browse connectors | Thêm **Google Drive** (Add to your team) |
-| 6 | Connectors → Browse connectors | Thêm **Google Sheets** (Add to your team), đặt quyền ghi/sửa là **Always allow** |
-| 7 | Claude in Chrome | Bật **Enable for your team** |
-| 8 | Cowork | Bật **Enable for your organization** |
-| 9 | Cowork | Bật **Run Cowork in the cloud** (để research chạy khi máy tắt) |
+- **1.** Capabilities → bật **Web search**
+- **2.** Capabilities → bật **Cloud code execution and file creation**
+- **3.** Plugins & skills → tab Policy → bật **Skills**
+- **4.** Plugins & skills → bật cho phép thành viên **thêm plugin**
+- **5.** Connectors → Browse connectors → **Google Drive** → Add to your team
+- **6.** Connectors → Browse connectors → **Google Sheets** → Add to your team, đặt quyền ghi/sửa là **Always allow**
+- **7.** Claude in Chrome → bật **Enable for your team**
+- **8.** Cowork → bật **Enable for your organization**
+- **9.** Cowork → bật **Run Cowork in the cloud** (để research chạy khi máy tắt)
 
 Nếu kết nối Google báo "ứng dụng bị chặn": **quản trị Google** vào admin.google.com → Security → Access and data control → API controls → Manage third-party app access → đặt **Claude** là **Trusted**.
 
