@@ -34,6 +34,19 @@ Mở Claude và nói một trong các câu sau:
 
 Nếu đã tạo lịch tự động lúc cài đặt, research sẽ tự chạy mỗi sáng thứ Hai–thứ Sáu (mỗi ngày một sản phẩm theo vòng). Mọi kết quả nằm trong Google Sheet **Redsun MKT — Research database**.
 
+## Khi có bản mới
+
+Người phụ trách kỹ thuật sẽ báo trong nhóm chat khi có bản mới. Khi nhận được thông báo:
+
+1. Mở Claude **trong thư mục `redsun-research-mkt`** (Claude Desktop: Cowork → chọn thư mục; Claude Code: mở trong thư mục).
+2. Dán câu này và gửi:
+
+   > Đọc file UPDATE.md và cập nhật giúp tôi.
+
+3. Làm theo từng bước Claude nhờ (thường chỉ bấm **Update** hoặc tải lại file ZIP), rồi mở cuộc trò chuyện mới.
+
+Dữ liệu trong Google Sheet **không bị ảnh hưởng**. Muốn xem bản mới có gì: mở file `CHANGELOG.md`, hoặc hỏi Claude "bản mới có gì?".
+
 ## Duyệt (dành cho trưởng nhóm MKT)
 
 Mở Google Sheet **Redsun MKT — Research database**:

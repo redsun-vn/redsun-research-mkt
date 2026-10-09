@@ -14,6 +14,7 @@
 | "Kho insight có gì về …", "tuần này có gì mới" | `mkt-research` mục Hỏi đáp: trả lời kèm mã OB/link nguồn, không ghi gì |
 | "Hôm qua research có chạy không?" | Đọc Digest: `Tóm tắt lượt chạy`, `Nguồn lỗi/bị chặn` gần nhất |
 | "Strategy đã ổn chưa?", "duyệt strategy" | `mkt-content-calendar`: tóm tắt trụ cột + trạng thái; chỉ người duyệt tự đổi `nháp` → `đã duyệt` |
+| "Cập nhật công cụ", "có bản mới", "bản mới có gì" | Làm theo `UPDATE.md`; chỉ hỏi "có gì mới" thì tóm tắt `CHANGELOG.md` |
 | "Thêm đối thủ…", "thêm sản phẩm hosting…", "thêm từ khoá…" | `mkt-setup` → `references/add-product-guide.md` |
 
 Câu không khớp bảng → hỏi lại một câu ngắn.

@@ -25,7 +25,23 @@ claude plugin validate .                   # manifest
 bash scripts/build-desktop-zip.sh          # dist/redsun-mkt.zip cho người không có GitHub
 ```
 
-Phát hành: tăng `version` trong `.claude-plugin/plugin.json`, commit, push. Desktop: Customize → Plugins cập nhật; Claude Code: `claude plugin update redsun-mkt`.
+## Phát hành bản mới
+
+1. Chạy 3 lệnh kiểm tra ở trên; tất cả phải pass.
+2. Tăng `version` trong `.claude-plugin/plugin.json` (sửa lỗi: 0.1.0 → 0.1.1; thêm tính năng: 0.1.x → 0.2.0). Plugin chỉ báo có bản mới khi `version` thay đổi.
+3. Thêm mục mới ở **đầu** `CHANGELOG.md`: ngày, 1–4 dòng "có gì mới" bằng lời thường, và **Team cần làm** (thêm tab/cột Sheet, sửa lời nhắn lịch tự động, bật kết nối mới… hoặc "Không có").
+4. Nếu thay đổi cấu trúc Sheet: cập nhật `shared/data-contract.md`, `templates/sheet/`, máy kiểm tra, và đảm bảo `mkt-setup` Bước 2 bổ sung được phần thiếu cho bảng cũ mà không đụng dữ liệu.
+5. Nếu đổi lời nhắn lịch tự động: cập nhật bảng ở `SETUP.md` Bước 6 và ghi rõ trong "Team cần làm".
+6. Commit, push lên `main`, chạy `bash scripts/build-desktop-zip.sh` và gửi `dist/redsun-mkt.zip` cho người không có GitHub.
+7. Gửi thông báo vào nhóm chat MKT:
+
+```
+📢 Công cụ research Marketing có bản mới <version>
+Có gì mới: <1–3 dòng từ CHANGELOG>
+Team cần làm: <… | Không có>
+Cách cập nhật: mở Claude trong thư mục redsun-research-mkt và nói "Đọc file UPDATE.md và cập nhật giúp tôi".
+(Ai cài bằng file ZIP: tải file đính kèm.)
+```
 
 Kiểm tra bảng thật bất kỳ lúc nào: xuất Sheet ra .xlsx (Drive → Tải xuống → Microsoft Excel) rồi `python3 scripts/validate_trace.py --workbook file.xlsx`.
 

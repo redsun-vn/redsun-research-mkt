@@ -8,6 +8,6 @@ OUT="$ROOT/dist/redsun-mkt.zip"
 mkdir -p "$ROOT/dist"
 rm -f "$OUT"
 cd "$ROOT"
-zip -rq "$OUT" .claude-plugin skills commands shared templates scripts CLAUDE.md SETUP.md DAILY.md README.md \
+zip -rq "$OUT" .claude-plugin skills commands shared templates scripts CLAUDE.md SETUP.md DAILY.md UPDATE.md CHANGELOG.md README.md \
   -x '*/__pycache__/*' '*.DS_Store'
 echo "Đã tạo $OUT"

@@ -11,6 +11,7 @@ Repo này là plugin Claude cho team Marketing redsun.vn. Bạn (Claude) thực 
 | Người dùng nói | Bạn đọc và làm theo |
 |---|---|
 | "cài đặt", "setup", "đọc SETUP.md" | `SETUP.md` |
+| "cập nhật", "update", "bản mới", "đọc UPDATE.md", "bản mới có gì" | `UPDATE.md` (và `CHANGELOG.md`) |
 | "research hôm nay", "chạy research", "research bằng Chrome", "lập lịch tuần", "kho insight có gì" | `DAILY.md` |
 | câu hỏi về cấu trúc dữ liệu | `shared/data-contract.md` |
 
