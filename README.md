@@ -4,6 +4,8 @@ Claude research đối thủ và khách hàng mỗi ngày (Fanpage, TikTok, YouT
 
 Bạn **không cần biết kỹ thuật**. Claude làm hết, bạn chỉ trả lời câu hỏi và bấm vài chỗ khi Claude nhờ.
 
+📘 **Hướng dẫn sử dụng từng bước cho team MKT:** [`docs/mkt-user-guide.md`](docs/mkt-user-guide.md) (cài đặt, mỗi sáng, lấy ý tưởng, lịch tuần, duyệt, sự cố, bảng câu nói nhanh).
+
 ## Cài đặt (làm 1 lần, khoảng 15 phút)
 
 1. **Tải thư mục này về máy.** Mở https://github.com/redsun-vn/redsun-research-mkt (đăng nhập GitHub bằng tài khoản đã được mời vào nhóm `redsun-vn`), bấm nút xanh **Code** → **Download ZIP**, rồi giải nén (bấm đúp vào file zip). Bạn sẽ có thư mục `redsun-research-mkt`.
