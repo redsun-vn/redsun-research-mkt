@@ -29,7 +29,7 @@ Câu không khớp bảng → hỏi lại một câu ngắn.
 
 | Tình huống | Nói với người dùng |
 |---|---|
-| Thiếu kết nối Google Drive/Sheets | "Mình chưa vào được Google Sheets. Bạn làm giúp mình bước kết nối nhé" → `SETUP.md` Bước 3 |
+| Thiếu kết nối Google Drive/Sheets | Dùng cách Chrome (`shared/sheet-access.md`) nếu Chrome đã đăng nhập Google. Không được → "Mình chưa vào được bảng dữ liệu. Bạn làm giúp mình bước kết nối nhé" → `SETUP.md` Bước 3 |
 | Chrome không kết nối | "Chrome chưa mở hoặc chưa bật tiện ích Claude. Hôm nay mình research phần website trước; bạn mở Chrome rồi nhắn 'research bằng Chrome' sau nhé." |
 | Facebook/TikTok hiện xác minh/captcha | Dừng phần đó. "Facebook đang yêu cầu xác minh tài khoản. Bạn tự mở Facebook kiểm tra giúp; hôm nay mình tạm dừng đọc Facebook." |
 | Sản phẩm chưa có trụ cột đã duyệt | Câu mẫu trong `mkt-content-calendar` bước 2 |

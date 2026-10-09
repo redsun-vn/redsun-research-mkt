@@ -34,17 +34,32 @@ Mở đầu: "Chào bạn! Mình sẽ cài công cụ research cho team Marketin
 
 ---
 
-## Bước 3 — Kết nối Google Drive và Google Sheets
+## Bước 3 — Cho Claude đọc/ghi Google Sheet
 
-**Mục tiêu:** Claude tìm/tạo được file (Drive) và đọc/ghi từng tab của bảng (Sheets). **Cần cả hai.**
+**Mục tiêu:** Claude đọc/ghi được bảng dữ liệu. Có 2 cách (chi tiết kỹ thuật: `shared/sheet-access.md`):
+- **Cách 1 — Kết nối Google Drive + Google Sheets** (khuyên dùng; chạy được cả lịch tự động khi máy tắt).
+- **Cách 2 — Chrome đã đăng nhập Google** (dùng khi công ty chưa bật kết nối; cần máy bật và Chrome mở).
 
-**Kiểm tra:** có công cụ Google Drive `search_files` và công cụ Google Sheets `get_values`. Gọi thử `search_files` với `title = 'Redsun MKT — Research database'`. Cả hai có → sang Bước 4.
+**Kiểm tra:** có công cụ Google Drive `search_files` và Google Sheets `get_values` → cách 1 sẵn sàng, sang Bước 4.
 
-Thiếu cái nào, hướng dẫn từng thao tác (làm lần lượt cho **Google Drive** rồi **Google Sheets**):
-- Desktop/Cowork: "Bấm **Settings** (Cài đặt) → **Connectors** (Kết nối) → tìm **Google Drive** → **Connect**, đăng nhập **tài khoản Google công ty**." Xong → làm tương tự với **Google Sheets**. Rồi: "Bạn mở lại cuộc trò chuyện này và nhắn 'xong'." Nếu đã kết nối nhưng đang tắt trong cuộc trò chuyện: "Bấm biểu tượng kết nối ở ô chat và bật Google Drive / Google Sheets."
-- Claude Code: "Bạn mở trình duyệt vào **claude.ai** (cùng tài khoản), vào **Settings → Connectors**, kết nối **Google Drive** và **Google Sheets** bằng tài khoản Google công ty. Xong nhắn 'xong'." Vẫn chưa thấy công cụ → "Bạn thoát Claude rồi mở lại giúp mình nhé" (thao tác duy nhất ngoài chat).
+**Chưa có kết nối**, hướng dẫn từng thao tác:
+1. Desktop/Cowork: "Bấm **Settings** (Cài đặt) → **Connectors** (Kết nối). Bạn có thấy **Google Drive** và **Google Sheets** trong danh sách không?"
+   Claude Code: "Bạn mở **claude.ai** trên trình duyệt (cùng tài khoản) → **Settings → Connectors**. Bạn có thấy **Google Drive** và **Google Sheets** không?"
+2. **Có thấy** → "Bấm **Connect** ở Google Drive, đăng nhập **tài khoản Google công ty**; làm tương tự với Google Sheets." Rồi: "Bạn mở lại cuộc trò chuyện (Claude Code: thoát và mở lại Claude) và nhắn 'xong'." Đã kết nối mà vẫn chưa thấy công cụ: "Bấm biểu tượng kết nối ở ô chat và bật Google Drive / Google Sheets."
+3. **Không thấy** → công ty dùng Claude Team và **Owner chưa bật**. Nói: "Phần này cần người quản trị Claude của công ty bật một lần. Bạn gửi giúp tin nhắn này cho người quản trị:"
+   ```
+   Nhờ anh/chị bật kết nối Google cho Claude của team: vào claude.ai → Organization settings → Connectors → Browse connectors → chọn Google Drive → Add to your team; làm tương tự với Google Sheets. Nếu Google Workspace công ty chặn ứng dụng ngoài, cần tin cậy ứng dụng Claude tại admin.google.com → Security → Access and data control → API controls. Cảm ơn!
+   ```
+   Trong lúc chờ: dùng **cách 2** (mục dưới) để team vẫn làm việc được.
+4. Kết nối báo lỗi quyền (Owner chỉ cho đọc): "Người quản trị đang chỉ cho phép đọc. Nhờ họ cho phép sửa với Google Sheets." Trong lúc chờ: cách 2.
 
-**Nếu lỗi quyền:** "Tài khoản của bạn chưa có quyền sửa bảng/thư mục chung. Nhờ người tạo bảng chia sẻ quyền **Người chỉnh sửa** cho bạn."
+**Cách 2 — Chrome:**
+1. Cần công cụ Claude in Chrome (cài theo Bước 4 mục 2 nếu chưa có).
+2. "Trên Chrome, bạn kiểm tra đã đăng nhập **tài khoản Google công ty** chưa (mở drive.google.com thấy Drive của bạn là được)."
+3. Tự kiểm tra: mở `https://drive.google.com` trong tab mới, không bị hỏi đăng nhập → được. Đóng tab.
+4. Nói: "Mình sẽ đọc/ghi bảng qua Chrome của bạn. Khi mình chạy, bạn để Chrome mở và đừng đóng tab mình đang dùng."
+
+**Nếu lỗi quyền với bảng:** "Tài khoản của bạn chưa có quyền sửa bảng. Nhờ người tạo bảng chia sẻ quyền **Người chỉnh sửa** cho bạn."
 
 ---
 
@@ -84,7 +99,7 @@ Bỏ qua nếu team đã có các tác vụ này (hỏi: "Team đã tạo lịch
 4. "Chọn lặp lại: <thứ Hai–thứ Sáu lúc 09:00 | … >, rồi lưu." Lặp cho 3 tác vụ.
 
 Nói với người dùng:
-- "Research thường chạy được cả khi máy tắt."
+- "Research thường chạy được cả khi máy tắt" — **chỉ khi dùng cách 1 (kết nối)**. Dùng cách 2 (Chrome) thì mọi tác vụ cần máy bật và Chrome mở.
 - "Research Chrome cần máy bật, Chrome mở và đã đăng nhập. Sáng nào máy tắt, bạn chỉ cần nhắn 'research bằng Chrome'."
 - "Lịch tuần: lúc nào cần, bạn cứ nhắn 'lập lịch tuần sau' là có ngay."
 - "Nếu công ty tắt tính năng lịch tự động, mỗi sáng bạn nhắn 'research hôm nay' là được."

@@ -8,6 +8,7 @@ description: Cài đặt hệ thống research Marketing Redsun — kiểm tra G
 Đọc trước (tính từ "Base directory" của skill):
 - `../../shared/working-rules.md` — **bắt buộc**.
 - `../../shared/data-contract.md` — 7 tab, cột, quy tắc ghi.
+- `../../shared/sheet-access.md` — đọc/ghi Sheet bằng connector hoặc bằng Chrome.
 - `references/add-product-guide.md` — khi thêm sản phẩm hoặc đối thủ.
 - Template từng tab: `../../templates/sheet/1-huong-dan.csv` … `7-content-calendar.csv` (tên tab theo thứ tự: Hướng dẫn, Nguồn theo dõi, Chiến lược content, Insight hằng ngày, Research database, Digest, Content Calendar).
 
@@ -15,8 +16,8 @@ description: Cài đặt hệ thống research Marketing Redsun — kiểm tra G
 
 | Kiểm tra | Cách | Không được thì |
 |---|---|---|
-| Google Drive | `search_files` với `title = 'Redsun MKT — Research database'` | Dừng; hướng dẫn kết nối theo `../../SETUP.md` Bước 3 |
-| Google Sheets | Có công cụ `get_values`/`update_values` của Google Sheets | Dừng; hướng dẫn kết nối theo `../../SETUP.md` Bước 3 |
+| Google Drive + Sheets | Có công cụ `search_files` và `get_values`/`update_values` | Dùng cách Chrome (dòng dưới) |
+| Sheet qua Chrome | Có Claude in Chrome và Chrome đã đăng nhập Google (mở `https://drive.google.com` không bị hỏi đăng nhập) | Không có cả hai cách → dừng, theo `../../SETUP.md` Bước 3 |
 | Đọc web | WebFetch `https://trends.google.com/trending?geo=VN` | Ghi nhận |
 | Chrome | Có công cụ Claude in Chrome | Ghi nhận "phần Facebook/TikTok/quảng cáo cần Chrome, cài sau cũng được" |
 
@@ -29,6 +30,8 @@ Báo 3–4 dòng ✅/⚠️, không thuật ngữ.
 - **Chưa có**: hỏi một câu: "Mình tạo bảng Research database mới cho team nhé? Bảng sẽ có sẵn danh sách đối thủ và chiến lược content của SIPOS, WEBINO, REDSUN BOS từ bảng mẫu team đã làm." Hỏi thêm: lưu ở **Drive chung của công ty** (khuyên dùng — nhờ dán link thư mục) hay Drive cá nhân rồi chia sẻ.
 
 ## Bước 3 — Tạo Sheet mới từ template
+
+Đang dùng cách Chrome → làm theo mục "Tạo bảng mới qua Chrome" trong `../../shared/sheet-access.md`, nội dung từng tab lấy từ template như dưới. Đang có connector → làm các bước sau.
 
 1. Drive `create_file`: `title = "Redsun MKT — Research database"`, `contentMimeType = "application/vnd.google-apps.spreadsheet"`, `parentId` = thư mục người dùng chọn (nếu có).
 2. `update_spreadsheet` một lần: đổi tên tab đầu (`sheetId 0`) thành `Hướng dẫn`; `addSheet` 6 tab còn lại theo đúng thứ tự (đặt `sheetId` 1…6).

@@ -1,7 +1,7 @@
 {
   "name": "redsun-mkt",
   "description": "Research đối thủ và khách hàng hằng ngày cho SIPOS, WEBINO, REDSUN BOS, ghi vào Google Sheet Research database (Quan sát → Căn cứ → Ý nghĩa → Content Idea), và lập Content Calendar tuần truy vết được về quan sát và trụ cột chiến lược — dành cho team Marketing Redsun.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Redsun"
   },

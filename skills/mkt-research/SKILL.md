@@ -8,10 +8,11 @@ description: Research insight và đối thủ hằng ngày cho Redsun (mặc đ
 Đọc trước (tính từ thư mục chứa file này, tức "Base directory" của skill):
 - `../../shared/working-rules.md` — **bắt buộc**.
 - `../../shared/data-contract.md` — tab, cột, quy tắc ghi.
+- `../../shared/sheet-access.md` — đọc/ghi Sheet bằng connector hoặc bằng Chrome.
 - `references/sources-playbook.md` — đọc từng loại nguồn thế nào, giới hạn Chrome.
 - `references/analysis-lenses.md` — 7 loại thông tin và cách viết 4 cột.
 
-Công cụ cần: **Google Sheets connector** (đọc/ghi tab), Google Drive (tìm file), WebFetch/WebSearch, Claude in Chrome (Facebook, TikTok, Ad Library). Thiếu Sheets connector → dừng, hướng dẫn bật theo `../../SETUP.md` Bước 3.
+Công cụ cần: một cách đọc/ghi Sheet theo `../../shared/sheet-access.md` (connector, hoặc Chrome đã đăng nhập Google), WebFetch/WebSearch, Claude in Chrome (Facebook, TikTok, Ad Library). Không có cách nào → dừng, hướng dẫn theo `../../SETUP.md` Bước 3.
 
 ## 0. Xác định yêu cầu
 
@@ -31,10 +32,10 @@ Công cụ cần: **Google Sheets connector** (đọc/ghi tab), Google Drive (t�
 
 ## 1. Mở Research database
 
-1. Drive `search_files`: `title = 'Redsun MKT — Research database' and mimeType = 'application/vnd.google-apps.spreadsheet'`. Không thấy → chưa cài, chuyển skill `mkt-setup`. Nhiều file → hỏi người dùng (chạy theo lịch: dừng và báo).
-2. Sheets `get_values` `'Nguồn theo dõi'!A:I`: lấy dòng cấu hình (giới hạn mỗi lần chạy, luân phiên, chủ đề nóng), danh sách `của mình`, `đối thủ`, `từ khóa` của từng sản phẩm. Bỏ qua dòng `đề xuất chờ duyệt`.
+1. Tìm file theo `../../shared/sheet-access.md` (connector: Drive `search_files` với `title = 'Redsun MKT — Research database'`; Chrome: trang tìm kiếm Drive). Không thấy → chưa cài, chuyển skill `mkt-setup`. Nhiều file → hỏi người dùng (chạy theo lịch: dừng và báo).
+2. Đọc tab `Nguồn theo dõi` (cột A:I): lấy dòng cấu hình (giới hạn mỗi lần chạy, luân phiên, chủ đề nóng), danh sách `của mình`, `đối thủ`, `từ khóa` của từng sản phẩm. Bỏ qua dòng `đề xuất chờ duyệt`.
 3. Chọn sản phẩm hôm nay theo dòng `Luân phiên sản phẩm` (làm đúng công thức trong ô Ghi chú; ví dụ n = số ngày làm việc từ ngày mốc đến trước hôm nay, sản phẩm = vòng[n mod số sản phẩm]). Người dùng nêu tên sản phẩm thì dùng tên đó. Thứ Bảy/Chủ nhật: chỉ chạy khi người dùng yêu cầu.
-4. `get_values` `'Insight hằng ngày'!A:I` và `'Research database'!A:M`: biết dòng cuối, insight 7 ngày qua (để gắn nhãn `lặp lại`), và các quan sát hiện có.
+4. Đọc tab `Insight hằng ngày` (A:I) và `Research database` (A:M): biết dòng cuối, insight 7 ngày qua (để gắn nhãn `lặp lại`), và các quan sát hiện có.
 
 ## 2. Bước 1 — thu thập insight
 
@@ -48,7 +49,7 @@ Mỗi ý thành **một dòng** Insight hằng ngày đúng 9 cột của data c
 
 ## 3. Ghi Bước 1
 
-1. Nối các dòng insight vào cuối `'Insight hằng ngày'` bằng `update_values` (bắt đầu từ dòng cuối + 1). **Mọi ô có dấu `'` ở đầu.**
+1. Nối các dòng insight vào cuối `'Insight hằng ngày'` (bắt đầu từ dòng cuối + 1) theo `../../shared/sheet-access.md`. **Mọi ô có dấu `'` ở đầu.**
 2. Nối các dòng Digest của hôm nay vào cuối `'Digest'`: đủ các mục trong data contract (`Chủ đề`, `Từ khóa lặp lại`, `Cách đối thủ triển khai`, `Offer`, `CTA`, `Pain point`, `Pattern`, `Mới so với hôm qua`, `Nguồn lỗi/bị chặn`, `Tóm tắt lượt chạy`; thêm `Đối thủ mới nên xem xét thêm vào watchlist`, `Mốc <SẢN PHẨM>` khi có). Mục không có gì → ghi `không có`.
 3. Đọc lại 2 vùng vừa ghi, so số dòng.
 
@@ -57,7 +58,7 @@ Mỗi ý thành **một dòng** Insight hằng ngày đúng 9 cột của data c
 Từ insight **hôm nay** (cùng sản phẩm):
 1. Gom các insight cùng ý (cùng đối thủ hoặc cùng hiện tượng ở nhiều đối thủ) thành **quan sát**. Một quan sát = một nhận định có căn cứ, không phải chép lại insight.
 2. Với mỗi quan sát, so với Research database:
-   - **Đã có** quan sát cùng nội dung (cùng sản phẩm, cùng hiện tượng): chỉ sửa 2 ô `Ngày thấy gần nhất` (`'YYYY-MM-DD`) và `Số lần thấy` (số cũ + 1) của dòng đó bằng `update_values` đúng ô. Không sửa gì khác.
+   - **Đã có** quan sát cùng nội dung (cùng sản phẩm, cùng hiện tượng): chỉ sửa 2 ô `Ngày thấy gần nhất` (`'YYYY-MM-DD`) và `Số lần thấy` (số cũ + 1) của dòng đó, đúng ô (cách sửa: `../../shared/sheet-access.md`). Không sửa gì khác.
    - **Mới**: nối dòng mới, mã `OB` kế tiếp (lớn nhất hiện có + 1, 3 chữ số), `so_lan_thay = 1`, `trang_thai = gợi ý, chờ người duyệt`.
 3. Viết 4 cột theo `references/analysis-lenses.md`:
    - **Quan sát**: điều thấy được, trung lập, cụ thể.
@@ -68,13 +69,13 @@ Từ insight **hôm nay** (cùng sản phẩm):
 4. Số liệu của chính thương hiệu → quan sát `trang_thai = mốc` (không cần Ý nghĩa/Content Idea).
 5. Đọc lại vùng vừa ghi.
 
-## 5. Kiểm tra bằng máy (khi chạy được lệnh: Claude Code, Cowork)
+## 5. Kiểm tra bằng máy (khi chạy được lệnh và có Drive connector)
 
 1. Drive `download_file_content` file Research database với `exportMimeType: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`. Kết quả lớn sẽ được lưu ra file — dùng đúng đường dẫn đó.
 2. Chạy: `python3 "<Base directory>/../../scripts/validate_trace.py" --workbook "<đường dẫn file>"`. Không tìm thấy script theo đường dẫn này → tìm `validate_trace.py` trong thư mục plugin `redsun-mkt` (ví dụ `~/.claude/plugins/cache/`).
 3. `ERRORS` > 0 ở dòng vừa ghi → sửa đúng ô sai (chỉ ô của dòng mình vừa ghi hôm nay). Lỗi ở dòng cũ do người khác ghi → không sửa, chỉ nêu trong báo cáo.
 
-Không chạy được lệnh → tự soát các dòng vừa ghi theo bảng cột trong data contract.
+Không chạy được lệnh hoặc đang ghi qua Chrome → tự soát các dòng vừa ghi theo bảng cột trong data contract.
 
 ## 6. Hỏi đáp kho insight (không ghi)
 

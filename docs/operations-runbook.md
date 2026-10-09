@@ -53,6 +53,7 @@ Kiểm tra bảng thật bất kỳ lúc nào: xuất Sheet ra .xlsx (Drive → 
 - Sheets tự đổi chữ thành số/ngày/công thức (`=1+1` → `2`, `0800` → `800`); dấu `'` ở đầu giữ nguyên chữ. Ngày gõ tay được lưu dạng số ngày của Sheets — máy kiểm tra chấp nhận cả hai.
 - WebFetch không đọc được Meta Ad Library, TikTok, Facebook → các nguồn này chỉ qua Claude in Chrome. Chrome đọc được Ad Library không cần đăng nhập.
 - Tìm kiếm Drive không trả file trong thùng rác.
+- Không có connector: Chrome đã đăng nhập Google đọc được từng tab chính xác bằng `fetch('/spreadsheets/d/<ID>/gviz/tq?tqx=out:csv&headers=1&sheet=<tab>')` trong trang docs.google.com, và ghi được bằng dán TSV vào ô chọn qua Name box. Gõ trực tiếp ký tự Tab không sang ô bên cạnh.
 
 ## Kiểm tra sức khoẻ hằng tuần (10 phút)
 
@@ -66,7 +67,7 @@ Kiểm tra bảng thật bất kỳ lúc nào: xuất Sheet ra .xlsx (Drive → 
 | Triệu chứng | Nguyên nhân | Xử lý |
 |---|---|---|
 | "Chưa cài đặt" dù đã có bảng | Tài khoản chưa được chia sẻ bảng, hoặc tên bảng bị đổi | Chia sẻ quyền Người chỉnh sửa; giữ đúng tên `Redsun MKT — Research database` |
-| Không ghi được vào bảng | Thiếu Google Sheets connector | SETUP.md Bước 3 |
+| Không ghi được vào bảng | Owner chưa bật Google Drive/Sheets connector (Claude Team) hoặc chỉ cho đọc | Owner bật ở Organization settings → Connectors; trong lúc chờ team dùng cách Chrome (`shared/sheet-access.md`) |
 | Lịch tự động không chạy | Owner tắt Scheduled tasks, hoặc máy tắt (tác vụ Chrome) | Kiểm tra cài đặt admin; tạm chạy tay |
 | Research Chrome bị dừng | Facebook/TikTok yêu cầu xác minh | Người dùng tự xác minh; giảm giới hạn trong tab Nguồn theo dõi |
 | Lịch tuần không có bài cho WEBINO | WEBINO chưa có Fanpage/TikTok ở dòng `của mình` | Điền link kênh khi có |

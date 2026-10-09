@@ -6,7 +6,7 @@
 
 - Tên mặc định: **Redsun MKT — Research database**. Mọi thành viên dùng chung một file (chia sẻ quyền chỉnh sửa).
 - Tìm file: Google Drive `search_files` với `title = 'Redsun MKT — Research database' and mimeType = 'application/vnd.google-apps.spreadsheet'`. Nhiều kết quả → hỏi người dùng chọn (khi chạy theo lịch: dừng, ghi lý do vào Digest nếu đọc được, hoặc báo lỗi).
-- Cần **Google Sheets connector** để đọc/ghi từng tab (`get_spreadsheet`, `get_values`, `update_values`, `update_spreadsheet`). Google Drive connector dùng để tìm file, tạo file, xuất cả file ra `.xlsx` cho máy kiểm tra.
+- Đọc/ghi theo `shared/sheet-access.md`: **cách 1** Google Sheets + Google Drive connector; **cách 2** Chrome đã đăng nhập Google (khi tổ chức chưa bật connector). Quy tắc ghi ở mục 2 áp dụng cho cả hai cách.
 
 ### Tab và cột (dòng 1 là tiêu đề, giữ nguyên chữ)
 
@@ -58,10 +58,10 @@ Tiêu đề có dạng `Nhãn tiếng Việt (khoa)`. Máy kiểm tra đọc ph�
 
 ## 2. Quy tắc ghi (bắt buộc)
 
-1. **Chỉ nối dòng mới ở cuối bảng.** Đọc cột A bằng `get_values` với vùng mở (ví dụ `'Insight hằng ngày'!A:A`) để biết dòng cuối, rồi `update_values` từ dòng kế tiếp. Không chèn dòng, không sắp xếp, không xoá.
+1. **Chỉ nối dòng mới ở cuối bảng.** Đọc cột A (ví dụ `'Insight hằng ngày'!A:A`) để biết dòng cuối, rồi ghi từ dòng kế tiếp (cách ghi: `shared/sheet-access.md`). Không chèn dòng, không sắp xếp, không xoá.
 2. **Dòng cũ:** chỉ được sửa `Ngày thấy gần nhất` và `Số lần thấy` trong Research database. Không sửa gì khác.
 3. **Mọi ô chữ ghi kèm dấu `'` ở đầu** (ví dụ `'2026-10-08`, `'OB015`, `'-50% phí gia hạn`). Lý do: Sheets tự đổi chữ thành số/ngày/công thức (`=1+1` thành `2`, `0800` thành `800`); dấu `'` giữ nguyên chữ và không hiện ra. Ngoại lệ duy nhất: `Số lần thấy` ghi số.
-4. **Đọc lại sau khi ghi** (`get_values` đúng vùng vừa ghi) và so số dòng.
+4. **Đọc lại sau khi ghi** đúng vùng vừa ghi và so số dòng.
 5. Không bao giờ ghi `đã duyệt` vào Chiến lược content hay Research database.
 
 ## 3. Máy kiểm tra

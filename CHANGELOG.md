@@ -4,6 +4,13 @@ Bản mới nhất ở trên cùng. Mỗi bản có mục **Team cần làm**: v
 
 Cách cập nhật: mở Claude trong thư mục `redsun-research-mkt` và nói **"Đọc file UPDATE.md và cập nhật giúp tôi"**.
 
+## 0.2.0 — 09/10/2026
+
+- Dùng được khi công ty **chưa bật kết nối Google** cho Claude Team: Claude đọc/ghi bảng qua Chrome đã đăng nhập Google của bạn.
+- Hướng dẫn cài đặt có sẵn tin nhắn mẫu để nhờ người quản trị bật kết nối Google Drive và Google Sheets.
+
+**Team cần làm:** Không có. Nếu bạn đang dùng qua Chrome, khi Claude chạy hãy để Chrome mở.
+
 ## 0.1.0 — 09/10/2026
 
 Bản đầu tiên.
