@@ -19,7 +19,7 @@ Thông số lấy từ tab **Chiến lược content** (dòng `thông tin`). B�
 ## Vai trò kênh (dòng K-*) và thông điệp (TM-*)
 
 - Facebook (SIPOS): kênh chủ lực, đánh ngành sâu, thông điệp riêng từng ngành → định dạng bài viết/carousel/video.
-- TikTok (SIPOS): tạo nhu cầu, video 20–40 giây, tình huống thực tế, nói vấn đề không nói tính năng → `goc_tieu_de` dạng tình huống.
+- TikTok (SIPOS): tạo nhu cầu, video 15–30 giây (luật redsun-reels), tình huống thực tế, nói vấn đề không nói tính năng → `goc_tieu_de` dạng tình huống.
 - Góc/tiêu đề không trái thông điệp chủ đạo của sản phẩm.
 
 ## Chọn Content Idea
@@ -30,17 +30,25 @@ Thông số lấy từ tab **Chiến lược content** (dòng `thông tin`). B�
 4. Một quan sát dùng tối đa 2 bài/tuần (khác kênh hoặc khác góc).
 5. Content Idea có điều kiện ("cần xác minh", "chưa nên làm…") → bỏ qua, ghi vào Digest "chờ xác minh".
 
+## Góc theo bài toán
+
+`goc_tieu_de` nói bài toán của **một mô hình kinh doanh cụ thể**, không nói tính năng (`shared/working-rules.md` mục "Cách nói về sản phẩm"). Lấy `mo_hinh`, `tinh_huong`, `hau_qua` của OB khi có.
+- Tốt: "Quán cafe mang đi: cuối ca đếm tiền lệch mà không biết lệch ở đâu"
+- Tốt: "Shop bán online: khách gửi ảnh chuyển khoản, 10 đơn thì soi 10 lần"
+- Chưa tốt: "Giới thiệu tính năng báo cáo chốt ca" (mở bằng tính năng)
+- Chưa tốt: "Quản lý bán hàng dễ dàng hơn" (không có mô hình, không có bài toán)
+
 ## Định dạng gợi ý
 
 | Kênh | Định dạng |
 |---|---|
 | Facebook | bài viết, carousel, video ngắn |
-| TikTok | video ngắn 20–40 giây |
+| TikTok | video ngắn 15–30 giây (luật redsun-reels) |
 
 ## Ví dụ một dòng hợp lệ
 
 ```
 CAL-2026-W42-01 | 2026-W42 | 2026-10-12 | Facebook | SIPOS | S3.1 | OB004 |
-"Phần mềm + thiết bị: tổng chi phí năm đầu thật sự là bao nhiêu?" | carousel | Nhắn tin nhận bảng giá | | đề xuất, chờ duyệt
+"Tạp hoá mới mở: mua phần mềm + máy, năm đầu thật sự tốn bao nhiêu?" | carousel | Nhắn tin nhận bảng giá | | đề xuất, chờ duyệt
 ```
-OB004 có Content Idea "So sánh tổng chi phí một năm khi dùng phần mềm kèm thiết bị"; S3.1 "Quyết định ngay — Chậm là mất cơ hội" (giai đoạn hiện tại, đã duyệt).
+OB004 có `mo_hinh` "tạp hoá mới mở" và Content Idea "Tạp hoá mới mở đang khó ước tổng chi phí năm đầu → so sánh tổng chi phí một năm khi dùng phần mềm kèm thiết bị"; S3.1 "Quyết định ngay — Chậm là mất cơ hội" (giai đoạn hiện tại, đã duyệt).

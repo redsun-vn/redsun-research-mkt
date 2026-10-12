@@ -90,7 +90,7 @@ Không cài được → ghi nhận, tiếp tục; research chạy phần websit
 
 Chạy skill `mkt-setup` (hoặc đọc `skills/mkt-setup/SKILL.md` và làm theo). Skill này tìm bảng team đã có hoặc tạo bảng mới theo mẫu (7 tab), cho phép thêm sản phẩm/đối thủ, và chạy thử research.
 
-**Xong khi:** có Google Sheet **Redsun MKT — Research database** đủ 7 tab và ít nhất 1 dòng trong `Insight hằng ngày`.
+**Xong khi:** có Google Sheet **Research database** đủ 7 tab và ít nhất 1 dòng trong `Insight hằng ngày`.
 
 ---
 

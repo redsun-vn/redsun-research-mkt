@@ -39,6 +39,17 @@ Mở đầu: "Mình cập nhật công cụ research lên bản mới nhé, kho�
 
 ---
 
+## Bước 2b — Bổ sung tiêu đề cột mới trong Sheet (Claude tự làm)
+
+Người dùng không phải làm gì. Chỉ làm khi bản mới là 0.3.0 trở lên.
+1. Tìm Sheet **Research database** và đọc dòng 1 tab `Research database` (`'Research database'!1:1`) bằng kết nối Google Sheets, hoặc qua Chrome theo `shared/sheet-access.md`.
+2. Dòng 1 đã có chữ `(mo_hinh)` → bỏ qua bước này.
+3. Chưa có → ghi đúng 5 tiêu đề (đúng chữ như `shared/data-contract.md`) vào `N1:R1`, mỗi ô có dấu `'` ở đầu: `Mô hình kinh doanh (mo_hinh)`, `Lời khách nguyên văn (loi_khach)`, `Tình huống (tinh_huong)`, `Hậu quả (hau_qua)`, `Khoảng trống đối thủ (khoang_trong)`. Ô chỉ có khoảng trắng hoặc dấu xuống dòng coi như trống. Ô `N1:R1` đang có chữ khác → không ghi, báo người phụ trách kỹ thuật.
+4. Không đụng dòng nào khác. Đọc lại `'Research database'!A1:R1` để kiểm tra.
+5. Nói một câu: "Mình đã thêm 5 cột mới vào bảng để ghi lời khách và bài toán của từng mô hình kinh doanh. Dữ liệu cũ giữ nguyên."
+
+---
+
 ## Bước 3 — Làm phần "Team cần làm" trong CHANGELOG
 
 Chỉ làm khi bản mới có ghi. Thường gặp:

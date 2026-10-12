@@ -2,7 +2,7 @@
 
 Hướng dẫn từng bước, không cần biết kỹ thuật. Bạn chỉ **nói chuyện với Claude bằng tiếng Việt**; Claude làm phần còn lại.
 
-Mọi kết quả nằm trong một Google Sheet chung của team: **Redsun MKT — Research database**.
+Mọi kết quả nằm trong một Google Sheet chung của team: **Research database**.
 
 ---
 
@@ -37,7 +37,7 @@ Mọi kết quả nằm trong một Google Sheet chung của team: **Redsun MKT 
 - **Bước 6. Tạo lịch tự động (chỉ 1 người trong team làm)**
   - Claude hướng dẫn tạo 3 tác vụ: research thường (09:00), research Chrome (09:30), lịch tuần (16:00 thứ Sáu).
   - Người khác trong team **không** tạo lại, để tránh chạy trùng.
-- **Xong khi** Claude báo ✅ và gửi link bảng **Redsun MKT — Research database**.
+- **Xong khi** Claude báo ✅ và gửi link bảng **Research database**.
 
 ---
 
@@ -70,11 +70,13 @@ Mọi kết quả nằm trong một Google Sheet chung của team: **Redsun MKT 
   > Viết idea cho bài CAL-2026-W42-01
 - **Bước 2. Claude trả về từng idea thành một khối chữ**
   - Mỗi khối bắt đầu và kết thúc bằng dòng `=====`.
-  - Video: có kịch bản theo cảnh và giây. Bài đăng/carousel: có nội dung từng ảnh.
+  - Mọi khối có mục **"Vì sao đáng làm"**: mô hình kinh doanh, căn cứ thật, lời khách kèm link.
+  - Video: là gói nguyên liệu cho redsun-reels (bài toán, cách mới, câu mở gợi ý), không có kịch bản cảnh. Bài đăng/carousel: có nội dung từng ảnh.
   - Cuối khối có dòng **"Dựa trên"**: quan sát (mã OB) và trụ cột chiến lược mà idea dựa vào.
 - **Bước 3. Copy và dùng**
   - Copy **nguyên khối** (từ dòng `=====` đầu đến dòng `=====` cuối).
-  - Dán cho agent tạo video / agent viết bài, hoặc gửi cho người làm. Không cần viết thêm gì.
+  - **Brief video**: mở redsun-reels, dán nguyên khối. redsun-reels sẽ hỏi bạn chọn kiểu hình, rồi cho chọn 1 trong 3 ý tưởng; sau đó tự làm video.
+  - Bài đăng: dán cho agent viết bài, hoặc gửi cho người làm. Không cần viết thêm gì.
 - **Bước 4. Trước khi đăng**
   - Xem mục **"Cần team xác nhận"** trong khối: kiểm tra các số liệu/chính sách đó trước.
   - Xem mục **"Không được"**: không nêu tên đối thủ, không tự thêm số liệu.

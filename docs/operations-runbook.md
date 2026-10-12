@@ -66,7 +66,7 @@ Kiểm tra bảng thật bất kỳ lúc nào: xuất Sheet ra .xlsx (Drive → 
 
 | Triệu chứng | Nguyên nhân | Xử lý |
 |---|---|---|
-| "Chưa cài đặt" dù đã có bảng | Tài khoản chưa được chia sẻ bảng, hoặc tên bảng bị đổi | Chia sẻ quyền Người chỉnh sửa; giữ đúng tên `Redsun MKT — Research database` |
+| "Chưa cài đặt" dù đã có bảng | Tài khoản chưa được chia sẻ bảng, hoặc tên bảng bị đổi | Chia sẻ quyền Người chỉnh sửa; giữ đúng tên `Research database` (hoặc tên cũ `Redsun MKT — Research database`) |
 | Không ghi được vào bảng | Owner chưa bật Google Drive/Sheets connector (Claude Team) hoặc chỉ cho đọc | Owner bật ở Organization settings → Connectors; trong lúc chờ team dùng cách Chrome (`shared/sheet-access.md`) |
 | Lịch tự động không chạy | Owner tắt Scheduled tasks, hoặc máy tắt (tác vụ Chrome) | Kiểm tra cài đặt admin; tạm chạy tay |
 | Research Chrome bị dừng | Facebook/TikTok yêu cầu xác minh | Người dùng tự xác minh; giảm giới hạn trong tab Nguồn theo dõi |

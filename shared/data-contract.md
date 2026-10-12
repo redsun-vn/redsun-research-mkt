@@ -4,8 +4,8 @@
 
 ## 1. Một Google Sheet duy nhất cho cả team
 
-- Tên mặc định: **Redsun MKT — Research database**. Mọi thành viên dùng chung một file (chia sẻ quyền chỉnh sửa).
-- Tìm file: Google Drive `search_files` với `title = 'Redsun MKT — Research database' and mimeType = 'application/vnd.google-apps.spreadsheet'`. Nhiều kết quả → hỏi người dùng chọn (khi chạy theo lịch: dừng, ghi lý do vào Digest nếu đọc được, hoặc báo lỗi).
+- Tên file: **Research database** (file team đang dùng). Mọi thành viên dùng chung một file (chia sẻ quyền chỉnh sửa).
+- Tìm file: Google Drive `search_files` với `title contains 'Research database' and mimeType = 'application/vnd.google-apps.spreadsheet'`, rồi chỉ giữ file có tên — sau khi bỏ dấu cách đầu/cuối — đúng bằng `Research database` hoặc tên cũ `Redsun MKT — Research database` (bản trước 0.3.0). Nhiều kết quả → hỏi người dùng chọn (khi chạy theo lịch: dừng, ghi lý do vào Digest nếu đọc được, hoặc báo lỗi).
 - Đọc/ghi theo `shared/sheet-access.md`: **cách 1** Google Sheets + Google Drive connector; **cách 2** Chrome đã đăng nhập Google (khi tổ chức chưa bật connector). Quy tắc ghi ở mục 2 áp dụng cho cả hai cách.
 
 ### Tab và cột (dòng 1 là tiêu đề, giữ nguyên chữ)
@@ -37,12 +37,21 @@ Tiêu đề có dạng `Nhãn tiếng Việt (khoa)`. Máy kiểm tra đọc ph�
 - `url`: link `http(s)://` mở lại được.
 
 **Research database** (BẢNG CHÍNH, Bước 2: Quan sát → Căn cứ → Ý nghĩa → Content Idea)
-`Mã (id) | Ngày đầu thấy (ngay_dau) | Ngày thấy gần nhất (ngay_gan_nhat) | Số lần thấy (so_lan_thay) | Sản phẩm (san_pham) | Đối thủ (doi_thu) | Quan sát (quan_sat) | Căn cứ / dữ liệu (can_cu) | URL nguồn (url) | Ý nghĩa (y_nghia) | Độ tin cậy (do_tin_cay) | Content Idea (content_idea) | Trạng thái (trang_thai)`
+`Mã (id) | Ngày đầu thấy (ngay_dau) | Ngày thấy gần nhất (ngay_gan_nhat) | Số lần thấy (so_lan_thay) | Sản phẩm (san_pham) | Đối thủ (doi_thu) | Quan sát (quan_sat) | Căn cứ / dữ liệu (can_cu) | URL nguồn (url) | Ý nghĩa (y_nghia) | Độ tin cậy (do_tin_cay) | Content Idea (content_idea) | Trạng thái (trang_thai) | Mô hình kinh doanh (mo_hinh) | Lời khách nguyên văn (loi_khach) | Tình huống (tinh_huong) | Hậu quả (hau_qua) | Khoảng trống đối thủ (khoang_trong)`
 - `id`: `OB001`, `OB002`… liên tục, không dùng lại.
 - `so_lan_thay`: số nguyên ≥ 1.
 - `do_tin_cay`: bắt đầu bằng `cao`, `vừa` hoặc `thấp` (kèm lý do trong ngoặc khi `thấp`).
 - `trang_thai`: `gợi ý, chờ người duyệt` (Claude ghi), `đã duyệt` / `bỏ` (chỉ người duyệt ghi), `mốc` (số liệu thương hiệu, không dùng cho lịch).
-- Quan sát lặp lại: **không thêm dòng**, chỉ sửa `ngay_gan_nhat` và `so_lan_thay` của dòng cũ.
+- `content_idea`: viết dạng "Mô hình X đang gặp bài toán Y → cách mới Z (tính năng là bằng chứng)" — theo `shared/working-rules.md` mục Cách nói về sản phẩm.
+- Quan sát lặp lại: **không thêm dòng**, chỉ sửa `ngay_gan_nhat` và `so_lan_thay` của dòng cũ, và được điền ô **đang trống** của 5 cột nguyên liệu sâu bên dưới.
+- **5 cột nguyên liệu sâu** (N–R, dùng cho brief):
+  - `mo_hinh`: mô hình kinh doanh cụ thể ("quán cafe mang đi", "khách sạn 20 phòng"); nhiều thì ngăn `;`.
+  - `loi_khach`: dạng `"<câu nguyên văn>" — <URL>`; nhiều câu ngăn `;`, mỗi câu kèm link; không tên/ảnh/link trang cá nhân người viết; không có thì `không có`.
+  - `tinh_huong`: lúc nào, ở đâu, ai làm gì.
+  - `hau_qua`: mất tiền/giờ/khách; có số thì ghi số kèm nguồn.
+  - `khoang_trong`: đối thủ đang nói gì và góc họ bỏ ngỏ.
+  - Ô không có căn cứ ghi `không có`. Dòng `mốc` để trống được.
+  - Cột mới **nối cuối** để chỗ đọc cũ không lệch. Máy kiểm tra không bắt buộc 5 cột này (sheet cũ vẫn qua); sheet tạo trước bản 0.3.0 thêm tiêu đề theo `UPDATE.md`.
 
 **Digest** — `Ngày (ngay) | Mục (muc) | Nội dung (noi_dung)`
 - Mỗi lần research ghi các mục: `Chủ đề`, `Từ khóa lặp lại`, `Cách đối thủ triển khai`, `Offer`, `CTA`, `Pain point`, `Pattern`, `Mới so với hôm qua`, `Nguồn lỗi/bị chặn`, `Tóm tắt lượt chạy`. Thêm khi có: `Đối thủ mới nên xem xét thêm vào watchlist`, `Mốc <SẢN PHẨM>`.
@@ -59,7 +68,7 @@ Tiêu đề có dạng `Nhãn tiếng Việt (khoa)`. Máy kiểm tra đọc ph�
 ## 2. Quy tắc ghi (bắt buộc)
 
 1. **Chỉ nối dòng mới ở cuối bảng.** Đọc cột A (ví dụ `'Insight hằng ngày'!A:A`) để biết dòng cuối, rồi ghi từ dòng kế tiếp (cách ghi: `shared/sheet-access.md`). Không chèn dòng, không sắp xếp, không xoá.
-2. **Dòng cũ:** chỉ được sửa `Ngày thấy gần nhất` và `Số lần thấy` trong Research database. Không sửa gì khác.
+2. **Dòng cũ:** chỉ được sửa `Ngày thấy gần nhất` và `Số lần thấy` trong Research database, và điền ô đang trống của 5 cột nguyên liệu sâu. Không sửa gì khác.
 3. **Mọi ô chữ ghi kèm dấu `'` ở đầu** (ví dụ `'2026-10-08`, `'OB015`, `'-50% phí gia hạn`). Lý do: Sheets tự đổi chữ thành số/ngày/công thức (`=1+1` thành `2`, `0800` thành `800`); dấu `'` giữ nguyên chữ và không hiện ra. Ngoại lệ duy nhất: `Số lần thấy` ghi số.
 4. **Đọc lại sau khi ghi** đúng vùng vừa ghi và so số dòng.
 5. Không bao giờ ghi `đã duyệt` vào Chiến lược content hay Research database.

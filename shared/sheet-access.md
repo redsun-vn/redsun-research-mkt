@@ -17,7 +17,7 @@ Mở **một tab mới** cho bảng, đóng khi xong. Chỉ thao tác trên đú
 
 ### Tìm file
 - Người dùng đã đưa link → dùng link đó.
-- Chưa có → mở `https://drive.google.com/drive/search?q=Redsun%20MKT%20Research%20database`, đọc kết quả, lấy link dạng `https://docs.google.com/spreadsheets/d/<ID>/edit`. Nhiều kết quả → hỏi người dùng.
+- Chưa có → mở `https://drive.google.com/drive/search?q=Research%20database`, đọc kết quả, chỉ giữ bảng tính có tên đúng như `shared/data-contract.md` mục 1, lấy link dạng `https://docs.google.com/spreadsheets/d/<ID>/edit`. Nhiều kết quả → hỏi người dùng.
 - Lấy `<ID>` từ link.
 
 ### Đọc một tab (chính xác từng ô)
@@ -52,7 +52,7 @@ Sửa từng ô một, không dùng Tab:
 3. Đọc lại 2 ô bằng `&range=C<dòng>:D<dòng>`.
 
 ### Tạo bảng mới qua Chrome
-Mở `https://docs.google.com/spreadsheets/create`, đổi tên file thành `Redsun MKT — Research database` (bấm vào tên "Untitled spreadsheet" ở góc trên). Thêm tab bằng nút **+** góc dưới bên trái, đổi tên tab bằng bấm đúp vào tên tab. Ghi nội dung từng tab bằng cách dán như trên (template trong `templates/sheet/`). In đậm và cố định hàng 1 bằng menu **View → Freeze → 1 row** (không bắt buộc).
+Mở `https://docs.google.com/spreadsheets/create`, đổi tên file thành `Research database` (bấm vào tên "Untitled spreadsheet" ở góc trên). Thêm tab bằng nút **+** góc dưới bên trái, đổi tên tab bằng bấm đúp vào tên tab. Ghi nội dung từng tab bằng cách dán như trên (template trong `templates/sheet/`). In đậm và cố định hàng 1 bằng menu **View → Freeze → 1 row** (không bắt buộc).
 
 ### Máy kiểm tra ở cách 2
 Không xuất được file `.xlsx` qua Drive connector. Tự soát các dòng vừa ghi theo bảng cột trong `shared/data-contract.md`; với lịch tuần, soát từng dòng theo checklist trong `mkt-content-calendar` mục 4 (phần "Không chạy được lệnh"). Ghi "kiểm tra thủ công" trong Digest.
