@@ -54,7 +54,7 @@ NGUYÊN LIỆU CHO REELS
 - Cần team cung cấp: <ảnh/quay màn hình tính năng thật | không có>
 - Cần team xác nhận: <… | không có>
 
-Dựa trên: <OB…> · Trụ cột <mã> <tên> · Mã lịch <CAL-…> · Luật reels <tag | main@sha>
+Dựa trên: <OB…> · Trụ cột <mã> <tên> · Mã lịch <CAL-…> · Luật reels main@<sha7>
 ==========================================================================
 ```
 
