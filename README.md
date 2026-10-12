@@ -1,6 +1,8 @@
 # Công cụ Research Marketing — redsun.vn
 
-Claude research đối thủ và khách hàng mỗi ngày (Fanpage, TikTok, YouTube, blog/bảng giá, quảng cáo Meta, tìm kiếm) cho SIPOS, WEBINO, REDSUN BOS, ghi vào **một Google Sheet chung của team** (Research database: Quan sát → Căn cứ → Ý nghĩa → Content Idea), và lập **Content Calendar tuần** ngay khi bạn hỏi — mỗi bài đều truy ngược được về quan sát thật và trụ cột chiến lược đã duyệt.
+Claude research đối thủ và khách hàng mỗi ngày (Fanpage, TikTok, YouTube, blog/bảng giá, quảng cáo Meta, tìm kiếm) cho SIPOS, WEBINO, REDSUN BOS, ghi vào **một Google Sheet chung của team** (Research database: Quan sát → Căn cứ → Ý nghĩa → Content Idea, kèm mô hình kinh doanh, lời khách nguyên văn, tình huống, hậu quả, khoảng trống đối thủ), và lập **Content Calendar tuần** ngay khi bạn hỏi — mỗi bài đều truy ngược được về quan sát thật và trụ cột chiến lược đã duyệt.
+
+Redsun bán **giải pháp cho bài toán của từng mô hình kinh doanh** (quán cafe, khách sạn nhỏ, tạp hoá…), không bán phần mềm. Mọi ý tưởng, lịch và brief đi theo thứ tự: mô hình kinh doanh → bài toán (tình huống + hậu quả) → cách làm mới → tính năng là bằng chứng.
 
 Bạn **không cần biết kỹ thuật**. Claude làm hết, bạn chỉ trả lời câu hỏi và bấm vài chỗ khi Claude nhờ.
 
@@ -50,10 +52,10 @@ Mở Claude và nói một trong các câu sau:
 
 | Bạn nói | Claude làm |
 |---|---|
-| **Research hôm nay** | Đọc blog/bảng giá đối thủ, tìm kiếm, xu hướng → thêm insight, quan sát và Content Idea vào bảng |
+| **Research hôm nay** | Đọc blog/bảng giá đối thủ, tìm kiếm, xu hướng → thêm insight, quan sát và Content Idea vào bảng, ghi rõ mô hình kinh doanh, lời khách nguyên văn (kèm link), tình huống, hậu quả |
 | **Research bằng Chrome** | Đọc Fanpage, TikTok, quảng cáo của đối thủ (cần Chrome đang mở) |
 | **Lập lịch tuần sau** | Lập Content Calendar từ Content Idea + trụ cột đã duyệt (chạy ngay, bất cứ lúc nào) |
-| **Hôm nay làm nội dung gì?** / **Viết idea cho bài CAL-2026-W42-01** | Trả về từng idea theo khuôn chuẩn: copy nguyên khối: brief video dán vào redsun-reels, bài đăng dán cho agent viết bài hoặc gửi người làm |
+| **Hôm nay làm nội dung gì?** / **Viết idea cho bài CAL-2026-W42-01** | Trả về từng brief theo khuôn chuẩn, có mục **Vì sao đáng làm** (căn cứ thật, lời khách kèm link). **Brief video** (15–30 giây) là gói nguyên liệu: copy nguyên khối dán vào redsun-reels, reels hỏi bạn chọn kiểu hình và 1 trong 3 ý tưởng rồi tự làm video. **Brief bài đăng** dán cho agent viết bài hoặc gửi người làm |
 | **Kho insight tuần này có gì về SIPOS?** | Tóm tắt kèm mã quan sát và link nguồn |
 | **Thêm đối thủ X cho WEBINO** / **Thêm sản phẩm hosting** | Cập nhật tab Nguồn theo dõi (sản phẩm mới có chiến lược nháp chờ duyệt) |
 
@@ -70,7 +72,7 @@ Người phụ trách kỹ thuật sẽ báo trong nhóm chat khi có bản mớ
 
 3. Làm theo từng bước Claude nhờ (thường chỉ bấm **Update** hoặc tải lại file ZIP), rồi mở cuộc trò chuyện mới.
 
-Dữ liệu trong Google Sheet **không bị ảnh hưởng**. Muốn xem bản mới có gì: mở file `CHANGELOG.md`, hoặc hỏi Claude "bản mới có gì?".
+Dữ liệu trong Google Sheet **không bị ảnh hưởng**; khi bản mới cần thêm cột (ví dụ bản 0.3.0), Claude tự thêm tiêu đề cột, không đụng dòng cũ. Muốn xem bản mới có gì: mở file `CHANGELOG.md`, hoặc hỏi Claude "bản mới có gì?".
 
 ## Duyệt (dành cho trưởng nhóm MKT)
 
@@ -78,6 +80,7 @@ Mở Google Sheet **Research database**:
 - Tab **Chiến lược content**: cột Trạng thái. Chỉ trụ cột `đã duyệt` mới được dùng cho lịch tuần. Trụ cột mới Claude soạn luôn là `nháp` — bạn đọc, sửa nếu cần, rồi đổi thành `đã duyệt`.
 - Tab **Research database**: Content Idea ở trạng thái `gợi ý, chờ người duyệt`; bạn có thể đổi thành `đã duyệt` hoặc `bỏ` (ý tưởng `bỏ` sẽ không vào lịch).
 - Tab **Content Calendar**: mọi dòng là `đề xuất, chờ duyệt`; điền Người phụ trách và đổi trạng thái khi chốt.
+- **Brief video** có dòng `TRẠNG THÁI: chưa gửi redsun-reels — chờ team bổ sung` khi chưa có nỗi đau thật hoặc chưa đủ câu mở: trả lời các câu hỏi trong mục "Cần team xác nhận" rồi nhờ Claude viết lại, đừng dán vào reels.
 
 Quy tắc: không chèn dòng, không sắp xếp lại các bảng Claude đang ghi.
 
