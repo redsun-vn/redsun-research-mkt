@@ -30,10 +30,23 @@ Mục tiêu không phải "tìm trend" mà là liên tục bổ sung **dữ li�
 **Ý nghĩa** — nối với khách hàng hoặc vị thế của sản phẩm Redsun.
 > SIPOS đã có sẵn 6 ngành nên có thể nói đúng nỗi đau từng ngành
 
-**Content Idea** — một gợi ý ngắn, Redsun làm được.
-> Chuỗi nội dung SIPOS cho từng ngành, mỗi bài một nỗi đau riêng
+**Content Idea** — "Mô hình X đang gặp bài toán Y → cách mới Z (tính năng là bằng chứng)". Redsun bán giải pháp cho bài toán của mô hình kinh doanh, không bán phần mềm (`shared/working-rules.md`).
+> Tốt: Quán cafe mang đi cuối ca đếm tiền lệch mà không biết lệch ở đâu → chốt ca theo từng người, lệch hiện ngay trên điện thoại (bằng chứng: báo cáo chốt ca)
+> Chưa tốt: Giới thiệu tính năng báo cáo
 
 Khi chưa nên làm ngay: ghi rõ điều kiện, ví dụ "Chưa nên làm content phản hồi trước khi xác minh điều kiện ưu đãi của POS365".
+
+## Nguyên liệu sâu (5 cột N–R)
+
+Brief đọc các cột này để viết "Vì sao đáng làm" và "Bài toán → cách mới". Chỉ ghi điều có nguồn; không có → `không có`.
+
+| Cột | Viết gì | Tốt | Chưa tốt |
+|---|---|---|---|
+| `mo_hinh` | Mô hình kinh doanh cụ thể; nhiều thì ngăn `;` | quán cafe mang đi; khách sạn 20 phòng | bán lẻ; doanh nghiệp |
+| `loi_khach` | `"<câu nguyên văn>" — <URL>`; nhiều câu ngăn `;`. Không tên/ảnh/link trang cá nhân người viết | "Cuối ngày đếm tiền lệch hoài mà không biết ai" — https://www.facebook.com/groups/…/posts/… | Khách than lệch tiền (không nguyên văn, không link) |
+| `tinh_huong` | Lúc nào, ở đâu, ai làm gì | Ca tối đóng quán, chủ tự đếm két và đối sổ tay | Quản lý tiền khó |
+| `hau_qua` | Mất tiền/giờ/khách; có số thì ghi số kèm nguồn | Mất ~30 phút mỗi tối, lệch vài trăm nghìn/tuần (bài trong group) | Thiệt hại lớn |
+| `khoang_trong` | Đối thủ đang nói gì và góc họ bỏ ngỏ | KiotViet nói giá rẻ, tặng máy; không ai nói chuyện đối soát cuối ca | Đối thủ yếu |
 
 ## Độ tin cậy
 
@@ -45,4 +58,5 @@ Khi chưa nên làm ngay: ghi rõ điều kiện, ví dụ "Chưa nên làm cont
 
 - Mỗi đối thủ được đọc: ít nhất 1 ý về `offer` hoặc `cta` và 1 ý về `execution` hoặc `pattern`, nếu nguồn có.
 - Ưu tiên quan sát lặp ở nhiều đối thủ hơn quan sát đơn lẻ.
+- Mỗi quan sát mới có ít nhất `mo_hinh` + một trong `loi_khach` / `tinh_huong` / `hau_qua` có căn cứ. Không đạt → vẫn ghi nhưng `do_tin_cay` không được `cao`.
 - Ít mà thật tốt hơn nhiều mà bịa.

@@ -1,6 +1,6 @@
 ---
 name: mkt-setup
-description: Cài đặt hệ thống research Marketing Redsun — kiểm tra Google Drive/Google Sheets/Chrome, tạo Google Sheet "Redsun MKT — Research database" theo mẫu team (7 tab, đã có nguồn theo dõi và chiến lược content của SIPOS, WEBINO, REDSUN BOS) hoặc kết nối vào Sheet team đã có, chạy thử research; thêm sản phẩm mới (ví dụ SaaS, hosting, server, email) với đối thủ, từ khoá và trụ cột nháp. Dùng khi người dùng nói "chạy setup", "cài đặt", "thêm sản phẩm", "thêm đối thủ", "sửa nguồn theo dõi", hoặc khi skill khác báo chưa cài đặt.
+description: Cài đặt hệ thống research Marketing Redsun — kiểm tra Google Drive/Google Sheets/Chrome, tạo Google Sheet "Research database" theo mẫu team (7 tab, đã có nguồn theo dõi và chiến lược content của SIPOS, WEBINO, REDSUN BOS) hoặc kết nối vào Sheet team đã có, chạy thử research; thêm sản phẩm mới (ví dụ SaaS, hosting, server, email) với đối thủ, từ khoá và trụ cột nháp. Dùng khi người dùng nói "chạy setup", "cài đặt", "thêm sản phẩm", "thêm đối thủ", "sửa nguồn theo dõi", hoặc khi skill khác báo chưa cài đặt.
 ---
 
 # mkt-setup — cài đặt và cấu hình
@@ -25,7 +25,7 @@ Báo 3–4 dòng ✅/⚠️, không thuật ngữ.
 
 ## Bước 2 — Sheet dùng chung
 
-- **Đã có** (tìm thấy đúng 1 file): "Team đã có bảng Research database, mình dùng luôn." Đọc `get_spreadsheet` (`fields: ["sheets.properties"]`) và so với 7 tab; thiếu tab `Content Calendar` hoặc cột `Trạng thái` ở Chiến lược content → bổ sung (xem Bước 3 mục 4–5), không đụng dữ liệu khác. Sang Bước 4.
+- **Đã có** (tìm thấy đúng 1 file): "Team đã có bảng Research database, mình dùng luôn." Đọc `get_spreadsheet` (`fields: ["sheets.properties"]`) và so với 7 tab; thiếu tab `Content Calendar` hoặc cột `Trạng thái` ở Chiến lược content → bổ sung (xem Bước 3 mục 4–5); tab Research database thiếu 5 cột nguyên liệu sâu (dòng 1 chưa có `(mo_hinh)`) → thêm tiêu đề theo `../../UPDATE.md` Bước 2b. Không đụng dữ liệu khác. Sang Bước 4.
 - **Nhiều file**: liệt kê tên + người sở hữu, hỏi dùng file nào.
 - **Chưa có**: hỏi một câu: "Mình tạo bảng Research database mới cho team nhé? Bảng sẽ có sẵn danh sách đối thủ và chiến lược content của SIPOS, WEBINO, REDSUN BOS từ bảng mẫu team đã làm." Hỏi thêm: lưu ở **Drive chung của công ty** (khuyên dùng — nhờ dán link thư mục) hay Drive cá nhân rồi chia sẻ.
 
@@ -33,7 +33,7 @@ Báo 3–4 dòng ✅/⚠️, không thuật ngữ.
 
 Đang dùng cách Chrome → làm theo mục "Tạo bảng mới qua Chrome" trong `../../shared/sheet-access.md`, nội dung từng tab lấy từ template như dưới. Đang có connector → làm các bước sau.
 
-1. Drive `create_file`: `title = "Redsun MKT — Research database"`, `contentMimeType = "application/vnd.google-apps.spreadsheet"`, `parentId` = thư mục người dùng chọn (nếu có).
+1. Drive `create_file`: `title = "Research database"`, `contentMimeType = "application/vnd.google-apps.spreadsheet"`, `parentId` = thư mục người dùng chọn (nếu có).
 2. `update_spreadsheet` một lần: đổi tên tab đầu (`sheetId 0`) thành `Hướng dẫn`; `addSheet` 6 tab còn lại theo đúng thứ tự (đặt `sheetId` 1…6).
 3. Với từng tab, đọc file CSV template tương ứng và ghi toàn bộ bằng `update_values` từ ô `A1`. **Mọi ô có dấu `'` ở đầu** (ô trống để trống).
 4. `update_spreadsheet` một lần cho định dạng: hàng 1 in đậm và cố định (frozen) ở mọi tab; tự giãn độ rộng cột chữ (`autoResizeDimensions`) hoặc đặt độ rộng hợp lý; bật xuống dòng (wrap) cho cột dài (Insight, Quan sát, Căn cứ, Ý nghĩa, Content Idea, Nội dung).

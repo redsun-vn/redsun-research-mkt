@@ -50,6 +50,8 @@ URL_RE = re.compile(r"^https?://\S+")
 NHAN_RE = re.compile(r"^(mới|lặp lại \(lần \d+\)|mốc)(\s*;.*)?$")
 TRUST_RE = re.compile(r"^(cao|vừa|thấp)\b")
 KEY_RE = re.compile(r"\(([a-z_]+)\)\s*$")
+URL_IN_TEXT_RE = re.compile(r"https?://\S+")
+NONE_VALUE = "không có"
 SHEET_FORMULA_PREFIXES = ("=", "+", "-", "@")
 
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
@@ -239,6 +241,11 @@ def load_observations(tabs, errors):
             errors.append(f"{at}: độ tin cậy phải bắt đầu bằng cao / vừa / thấp")
         if r["trang_thai"] not in DB_STATUSES:
             errors.append(f"{at}: trạng thái '{r['trang_thai']}' không hợp lệ")
+        # Deep-material columns are optional so sheets created before they existed still pass.
+        quotes = r.get("loi_khach", "")
+        if quotes and quotes != NONE_VALUE and not all(
+                URL_IN_TEXT_RE.search(q) for q in quotes.split(";") if q.strip()):
+            errors.append(f"{at}: lời khách phải kèm link nguồn")
         obs[oid] = r
     return obs
 

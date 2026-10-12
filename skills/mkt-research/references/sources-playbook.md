@@ -26,7 +26,7 @@ Giới hạn đã biết (từ bảng mẫu của team): Facebook chỉ đọc �
 
 **Fanpage** — mở link cột `Fanpage`. Đọc các bài mới nhất (không cuộn quá giới hạn). Lấy: ngày đăng, câu mở đầu, định dạng, ưu đãi, CTA, lượt thích/chia sẻ/bình luận **hiển thị công khai** → cột `Tín hiệu`. `kenh = Facebook`.
 
-**Facebook Groups / tìm bài** — chỉ khi có nhóm/từ khoá trong Nguồn theo dõi. Ghi *chủ đề* người dùng bàn, không ghi tên hay thông tin người đăng/bình luận. `kenh = Facebook Groups`.
+**Facebook Groups / tìm bài** — chỉ khi có nhóm/từ khoá trong Nguồn theo dõi. Ghi *chủ đề* người dùng bàn; được giữ **câu nguyên văn** của bài/bình luận công khai kèm link bài để làm `loi_khach`, không ghi tên, ảnh hay link trang cá nhân người đăng/bình luận. `kenh = Facebook Groups`.
 
 **TikTok** — mở link cột `TikTok`. Lấy: caption, hashtag, lượt xem từng video, kiểu video. `kenh = TikTok`.
 

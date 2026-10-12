@@ -40,7 +40,7 @@ Nếu kết nối Google báo "ứng dụng bị chặn": **quản trị Google*
 **Mỗi thành viên MKT tự làm** (Claude sẽ hướng dẫn khi cài đặt):
 - Kết nối **Google Drive** và **Google Sheets** bằng tài khoản Google công ty (Settings → Connectors → Connect).
 - Cài tiện ích **Claude in Chrome**, đăng nhập Claude; trên Chrome đăng nhập Google, Facebook, TikTok bằng tài khoản thật của mình.
-- Được chia sẻ quyền **Người chỉnh sửa** trên bảng **Redsun MKT — Research database**.
+- Được chia sẻ quyền **Người chỉnh sửa** trên bảng **Research database**.
 
 Không cần: Gmail, Google Calendar, Google Docs, Google Slides.
 
@@ -53,11 +53,11 @@ Mở Claude và nói một trong các câu sau:
 | **Research hôm nay** | Đọc blog/bảng giá đối thủ, tìm kiếm, xu hướng → thêm insight, quan sát và Content Idea vào bảng |
 | **Research bằng Chrome** | Đọc Fanpage, TikTok, quảng cáo của đối thủ (cần Chrome đang mở) |
 | **Lập lịch tuần sau** | Lập Content Calendar từ Content Idea + trụ cột đã duyệt (chạy ngay, bất cứ lúc nào) |
-| **Hôm nay làm nội dung gì?** / **Viết idea cho bài CAL-2026-W42-01** | Trả về từng idea theo khuôn chuẩn: copy nguyên khối dán cho agent tạo video, tạo nội dung, hoặc gửi người làm |
+| **Hôm nay làm nội dung gì?** / **Viết idea cho bài CAL-2026-W42-01** | Trả về từng idea theo khuôn chuẩn: copy nguyên khối: brief video dán vào redsun-reels, bài đăng dán cho agent viết bài hoặc gửi người làm |
 | **Kho insight tuần này có gì về SIPOS?** | Tóm tắt kèm mã quan sát và link nguồn |
 | **Thêm đối thủ X cho WEBINO** / **Thêm sản phẩm hosting** | Cập nhật tab Nguồn theo dõi (sản phẩm mới có chiến lược nháp chờ duyệt) |
 
-Nếu đã tạo lịch tự động lúc cài đặt, research sẽ tự chạy mỗi sáng thứ Hai–thứ Sáu (mỗi ngày một sản phẩm theo vòng). Mọi kết quả nằm trong Google Sheet **Redsun MKT — Research database**.
+Nếu đã tạo lịch tự động lúc cài đặt, research sẽ tự chạy mỗi sáng thứ Hai–thứ Sáu (mỗi ngày một sản phẩm theo vòng). Mọi kết quả nằm trong Google Sheet **Research database**.
 
 ## Khi có bản mới
 
@@ -74,7 +74,7 @@ Dữ liệu trong Google Sheet **không bị ảnh hưởng**. Muốn xem bản 
 
 ## Duyệt (dành cho trưởng nhóm MKT)
 
-Mở Google Sheet **Redsun MKT — Research database**:
+Mở Google Sheet **Research database**:
 - Tab **Chiến lược content**: cột Trạng thái. Chỉ trụ cột `đã duyệt` mới được dùng cho lịch tuần. Trụ cột mới Claude soạn luôn là `nháp` — bạn đọc, sửa nếu cần, rồi đổi thành `đã duyệt`.
 - Tab **Research database**: Content Idea ở trạng thái `gợi ý, chờ người duyệt`; bạn có thể đổi thành `đã duyệt` hoặc `bỏ` (ý tưởng `bỏ` sẽ không vào lịch).
 - Tab **Content Calendar**: mọi dòng là `đề xuất, chờ duyệt`; điền Người phụ trách và đổi trạng thái khi chốt.

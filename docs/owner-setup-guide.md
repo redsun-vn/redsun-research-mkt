@@ -2,7 +2,7 @@
 
 Gửi người quản trị Claude Team của công ty. Làm **một lần**, khoảng 10–15 phút, bằng tài khoản **Owner** hoặc **Primary Owner** trên **claude.ai**.
 
-Mục đích: team Marketing dùng công cụ research của Redsun. Claude đọc web và Fanpage đối thủ, rồi đọc/ghi bảng **Redsun MKT — Research database** trên Google Sheets.
+Mục đích: team Marketing dùng công cụ research của Redsun. Claude đọc web và Fanpage đối thủ, rồi đọc/ghi bảng **Research database** trên Google Sheets.
 
 Bật kết nối Google chỉ cho phép dùng. Mỗi người vẫn tự đăng nhập tài khoản Google của mình, và Claude chỉ thấy file mà chính người đó có quyền.
 

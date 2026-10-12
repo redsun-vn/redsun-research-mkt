@@ -135,6 +135,42 @@ class DataCheckTest(WorkbookTest):
         self.assertIn("Content Calendar", result.stdout)
 
 
+DEEP_KEYS = ["mo_hinh", "loi_khach", "tinh_huong", "hau_qua", "khoang_trong"]
+DEEP = ["quán cafe mang đi", '"Cuối ngày đếm tiền lệch hoài" — https://www.facebook.com/groups/x/posts/1',
+        "Ca tối đóng quán, chủ tự đếm tiền", "Lệch 200k mỗi tuần (bài trong group)",
+        "Đối thủ nói giá rẻ, bỏ ngỏ chuyện đối soát ca"]
+
+
+class DeepColumnsTest(WorkbookTest):
+    def legacy_tabs(self, rows):
+        tabs = template_tabs()
+        tabs["Research database"] = [tabs["Research database"][0][:13]] + rows
+        return tabs
+
+    def test_template_ends_with_deep_columns_in_order(self):
+        header = template_tabs()["Research database"][0]
+        self.assertEqual([vt.header_key(h) for h in header[-5:]], DEEP_KEYS)
+
+    def test_full_row_with_deep_columns_passes(self):
+        result = run("--workbook", self.workbook({"Research database": [OB1 + DEEP]}))
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_sheet_without_deep_columns_still_passes(self):
+        result = run("--workbook", self.workbook(tabs=self.legacy_tabs([OB1, OB2])))
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_quote_without_link_is_reported(self):
+        no_link = DEEP[:1] + ['"Cuối ngày đếm tiền lệch hoài"'] + DEEP[2:]
+        result = run("--workbook", self.workbook({"Research database": [OB1 + no_link]}))
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout.count("lời khách phải kèm link"), 1)
+
+    def test_quote_marked_none_passes(self):
+        none = DEEP[:1] + ["không có"] + DEEP[2:]
+        result = run("--workbook", self.workbook({"Research database": [OB1 + none]}))
+        self.assertEqual(result.returncode, 0, result.stdout)
+
+
 class CalendarTest(WorkbookTest):
     def setUp(self):
         super().setUp()
